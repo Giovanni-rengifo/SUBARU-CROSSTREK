@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#003366"/>
+      <stop offset="100%" stop-color="#1a5fa8"/>
+    </linearGradient>
+  </defs>
+  <rect width="192" height="192" rx="36" fill="url(#bg)"/>
+  <!-- Pleiades / estrellas Subaru (6 puntos) -->
+  <circle cx="78" cy="42" r="8" fill="#e8b84b"/>
+  <circle cx="96" cy="32" r="13" fill="#e8b84b"/>
+  <circle cx="114" cy="42" r="8" fill="#e8b84b"/>
+  <circle cx="70" cy="62" r="6" fill="#e8b84b"/>
+  <circle cx="96" cy="68" r="9" fill="#e8b84b"/>
+  <circle cx="120" cy="58" r="6" fill="#e8b84b"/>
+  <!-- Carrocería del auto -->
+  <path d="M20 118 L38 86 Q44 76 54 76 L138 76 Q148 76 154 86 L172 118 L172 144 Q172 152 164 152 L28 152 Q20 152 20 144 Z" fill="#e8b84b"/>
+  <!-- Ventanas -->
+  <path d="M56 80 L60 108 L132 108 L136 80 Z" fill="#1a5fa8"/>
+  <rect x="92" y="80" width="8" height="28" fill="#e8b84b"/>
+  <!-- Ruedas -->
+  <circle cx="62" cy="155" r="22" fill="#0d1f3c"/>
+  <circle cx="62" cy="155" r="11" fill="#e8b84b"/>
+  <circle cx="62" cy="155" r="5" fill="#0d1f3c"/>
+  <circle cx="130" cy="155" r="22" fill="#0d1f3c"/>
+  <circle cx="130" cy="155" r="11" fill="#e8b84b"/>
+  <circle cx="130" cy="155" r="5" fill="#0d1f3c"/>
+  <!-- Parrilla/faros -->
+  <rect x="22" y="122" width="30" height="14" rx="7" fill="white" opacity="0.85"/>
+  <rect x="140" y="122" width="30" height="14" rx="7" fill="white" opacity="0.85"/>
+</svg>
