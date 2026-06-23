@@ -1,5 +1,5 @@
-const CACHE = 'crosstrek-v1';
-const PRECACHE = ['./', './index.html', './manifest.json', './icon.svg'];
+const CACHE = 'crosstrek-v2';
+const PRECACHE = ['./', './index.html', './manifest.json', './subaru-logo.png'];
 
 self.addEventListener('install', evt => {
   evt.waitUntil(
