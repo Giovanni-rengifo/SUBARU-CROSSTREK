@@ -1,217 +1,224 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#003366">
-  <meta name="description" content="Control de Mantenimiento - Subaru Crosstrek Híbrida">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="Crosstrek">
-  <title>Mantenimiento · Subaru Crosstrek</title>
-  <link rel="manifest" href="manifest.json">
-  <link rel="apple-touch-icon" href="subaru-logo.png">
-  <style>
-    :root {
-      --primary: #003366;
-      --primary-light: #1a5fa8;
-      --accent: #e8b84b;
-      --success: #1e8a44;
-      --warning: #b87600;
-      --danger: #c0392b;
-      --bg: #eef2f7;
-      --card: #ffffff;
-      --text: #1a1a2e;
-      --muted: #6c757d;
-      --border: #dde3ec;
-      --shadow: 0 2px 14px rgba(0,51,102,0.10);
-      --radius: 12px;
-    }
-    *{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-tap-highlight-color:transparent}
-
-    /* ── HEADER ── */
-    header{background:linear-gradient(135deg,#003366 0%,#1a5fa8 100%);color:#fff;padding:13px 16px;position:sticky;top:0;z-index:100;box-shadow:0 3px 18px rgba(0,0,0,.28)}
-    .hdr-row{display:flex;justify-content:space-between;align-items:center;gap:10px}
-    header h1{font-size:1.02rem;font-weight:800;letter-spacing:-.3px}
-    header p{font-size:.7rem;opacity:.75;margin-top:2px}
-    .km-pill{background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.3);border-radius:24px;padding:8px 14px;font-size:.82rem;font-weight:700;cursor:pointer;white-space:nowrap;min-height:40px;display:flex;align-items:center;gap:5px;flex-shrink:0}
-    .km-pill:active{background:rgba(255,255,255,.3)}
-
-    /* ── NAV ── */
-    nav{background:#002a55;display:flex;border-bottom:2px solid var(--accent)}
-    nav button{background:none;border:none;color:rgba(255,255,255,.6);padding:11px 4px;font-size:.76rem;font-weight:600;cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent;margin-bottom:-2px;transition:color .2s,border-color .2s;flex:1;min-width:0;letter-spacing:.1px}
-    nav button.active,nav button:hover{color:#fff}
-    nav button.active{border-bottom-color:var(--accent)}
-
-    /* ── MAIN ── */
-    main{max-width:600px;margin:0 auto;padding:13px 11px}
-
-    /* ── CARD (generic) ── */
-    .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:13px 14px;margin-bottom:11px}
-    .card-title{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--primary);margin-bottom:9px;display:flex;align-items:center;gap:6px}
-
-    /* ── STATS ── */
-    .stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:11px}
-    .stat{background:var(--card);border-radius:var(--radius);padding:12px 6px;text-align:center;box-shadow:var(--shadow)}
-    .stat-val{font-size:1.35rem;font-weight:800;color:var(--primary);line-height:1}
-    .stat-lbl{font-size:.62rem;color:var(--muted);margin-top:4px;line-height:1.3}
-
-    /* ── ALERTS (dashboard compact) ── */
-    .alert-row{display:flex;align-items:center;gap:9px;padding:9px 11px;border-radius:10px;margin-bottom:6px}
-    .alert-danger{background:#fff0f0;border-left:4px solid var(--danger)}
-    .alert-warning{background:#fff9ed;border-left:4px solid #e6ac00}
-    .al-ico{font-size:.95rem;flex-shrink:0}
-    .al-body{flex:1;min-width:0}
-    .al-name{font-size:.84rem;font-weight:700;line-height:1.2}
-    .al-sub{font-size:.71rem;color:var(--muted);margin-top:2px}
-
-    /* ── SERVICE CARDS ── */
-    .svc-card{background:var(--card);border-radius:12px;box-shadow:var(--shadow);padding:12px 13px 10px;margin-bottom:9px;border-left:5px solid var(--border)}
-    .svc-card.c-overdue{border-left-color:var(--danger)}
-    .svc-card.c-warning{border-left-color:#e6ac00}
-    .svc-card.c-ok{border-left-color:var(--success)}
-    .sc-head{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:5px}
-    .sc-name{font-size:.88rem;font-weight:700;line-height:1.3;color:var(--text)}
-    .sc-freq{font-size:.69rem;color:var(--muted);margin-top:2px}
-    .sc-next{display:flex;align-items:baseline;flex-wrap:wrap;gap:5px;margin:5px 0 3px}
-    .sc-date{font-size:.84rem;font-weight:700}
-    .sc-days{font-size:.74rem;font-weight:600}
-    .sc-days.ok{color:var(--success)}
-    .sc-days.warning{color:var(--warning)}
-    .sc-days.overdue{color:var(--danger)}
-    .sc-foot{display:flex;justify-content:space-between;align-items:center;margin-top:7px;flex-wrap:wrap;gap:5px}
-    .sc-last{font-size:.69rem;color:var(--muted)}
-    .sc-note{display:none;font-size:.78rem;color:var(--muted);line-height:1.55;margin-top:8px;padding-top:8px;border-top:1px solid var(--border)}
-    .sc-note.open{display:block}
-    .btn-info{background:transparent;border:1.5px solid var(--border);color:var(--muted);padding:5px 8px;font-size:.8rem;border-radius:7px;cursor:pointer;line-height:1;transition:background .15s,border-color .15s}
-    .btn-info.active{background:#eef4ff;border-color:var(--primary-light);color:var(--primary)}
-
-    /* ── PROGRESS ── */
-    .prog-wrap{display:flex;align-items:center;gap:6px;margin:4px 0}
-    .prog-bar{flex:1;height:6px;background:#e4e8ef;border-radius:3px;overflow:hidden}
-    .prog-fill{height:100%;border-radius:3px;transition:width .3s}
-    .c-ok .prog-fill{background:var(--success)}
-    .c-warn .prog-fill{background:#e6ac00}
-    .c-danger .prog-fill{background:var(--danger)}
-    .prog-txt{font-size:.68rem;color:var(--muted);white-space:nowrap}
-
-    /* ── BADGES ── */
-    .badge{display:inline-block;padding:3px 7px;border-radius:12px;font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.3px;white-space:nowrap}
-    .b-ok{background:#d1f0db;color:#0d5c2e}
-    .b-warn{background:#fff0c0;color:#7a4e00}
-    .b-danger{background:#ffe0de;color:#8b0000}
-    .b-critical{background:#c0392b;color:#fff;font-size:.62rem}
-
-    /* ── INPUTS ── */
-    input,select,textarea{width:100%;padding:9px 11px;border:1.5px solid var(--border);border-radius:8px;font-size:.88rem;background:#fff;color:var(--text);transition:border-color .2s,box-shadow .2s;font-family:inherit}
-    input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary-light);box-shadow:0 0 0 3px rgba(26,95,168,.14)}
-
-    /* ── BUTTONS ── */
-    .btn{padding:9px 15px;border:none;border-radius:8px;font-size:.83rem;font-weight:700;cursor:pointer;transition:all .18s;display:inline-flex;align-items:center;gap:5px}
-    .btn-primary{background:var(--primary);color:#fff}
-    .btn-primary:active{background:var(--primary-light)}
-    .btn-accent{background:var(--accent);color:#1a0800;font-weight:800}
-    .btn-outline{background:transparent;border:1.5px solid var(--border);color:var(--muted)}
-    .btn-del{background:transparent;color:var(--danger);border:1.5px solid var(--danger);padding:4px 9px;font-size:.74rem;border-radius:7px;cursor:pointer;font-weight:700;transition:all .18s}
-    .btn-del:active{background:var(--danger);color:#fff}
-    .btn-sm{padding:6px 12px;font-size:.77rem}
-
-    /* ── FORM ── */
-    .form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:10px}
-    .fg label{display:block;font-size:.7rem;font-weight:700;color:var(--muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:.3px}
-
-    /* ── COST ITEMS ── */
-    .cost-item{display:flex;justify-content:space-between;align-items:flex-start;padding:11px 0;border-bottom:1px solid var(--border);gap:10px}
-    .cost-item:last-child{border-bottom:none}
-    .cost-info strong{font-size:.86rem}
-    .cost-meta{font-size:.72rem;color:var(--muted);margin-top:2px;line-height:1.4}
-    .cost-amt{font-size:.98rem;font-weight:800;color:var(--primary);white-space:nowrap}
-
-    /* ── ESTIMATE ── */
-    .est-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}
-    .est-item{text-align:center;padding:12px 6px;background:var(--bg);border-radius:10px}
-    .est-val{font-size:1.05rem;font-weight:800;color:var(--primary)}
-    .est-lbl{font-size:.67rem;color:var(--muted);margin-top:4px}
-
-    /* ── TABS ── */
-    .tab{display:none}
-    .tab.active{display:block}
-
-    /* ── EMPTY ── */
-    .empty{text-align:center;padding:22px 12px;color:var(--muted)}
-    .empty .ico{font-size:2rem;margin-bottom:7px}
-
-    /* ── MODAL ── */
-    .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.52);z-index:200;align-items:center;justify-content:center;padding:14px}
-    .overlay.open{display:flex}
-    .modal{background:#fff;border-radius:16px;padding:18px;width:100%;max-width:440px;box-shadow:0 20px 60px rgba(0,0,0,.3);max-height:92vh;overflow-y:auto}
-    .modal-title{font-size:.97rem;font-weight:800;color:var(--primary);margin-bottom:13px}
-    .modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:13px}
-
-    /* ── TOAST ── */
-    .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(100px);background:#003366;color:#fff;padding:10px 22px;border-radius:26px;font-size:.86rem;font-weight:600;box-shadow:0 4px 20px rgba(0,0,0,.3);z-index:300;transition:transform .28s cubic-bezier(.34,1.56,.64,1)}
-    .toast.show{transform:translateX(-50%) translateY(0)}
-
-    /* ── CONFIG ── */
-    .cfg-section{margin-bottom:14px}
-    .cfg-section-title{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:8px}
-    .cfg-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-    .cfg-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:16px;padding-top:14px;border-top:1px solid var(--border)}
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#09111e">
+<meta name="description" content="Control de Mantenimiento - Subaru Crosstrek Híbrida">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Crosstrek">
+<title>Mantenimiento · Subaru Crosstrek</title>
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="subaru-logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #09111e;
+    --surf: #111c2e;
+    --surf2: #182338;
+    --border: rgba(255,255,255,0.07);
+    --primary: #1e52e8;
+    --primary-glow: rgba(30,82,232,0.18);
+    --gold: #f0b429;
+    --green: #10d07c;
+    --red: #ef4040;
+    --amber: #f59e0b;
+    --text: #dde4ef;
+    --muted: #5c6f85;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    background: radial-gradient(ellipse 120% 40% at 50% 0%, #0c2040 0%, var(--bg) 55%);
+    background-attachment: fixed;
+    color: var(--text);
+    min-height: 100vh;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .tab { display: none; }
+  .tab.active { display: block; }
+  .overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,4,18,0.78);
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    z-index: 200; align-items: center; justify-content: center; padding: 16px;
+  }
+  .overlay.open { display: flex; }
+  .toast {
+    position: fixed; bottom: 24px; left: 50%;
+    transform: translateX(-50%) translateY(120px);
+    background: var(--surf2); color: var(--text);
+    border: 1px solid rgba(255,255,255,0.13);
+    padding: 10px 24px; border-radius: 40px;
+    font-size: 0.85rem; font-weight: 600;
+    box-shadow: 0 8px 32px rgba(0,0,0,.6);
+    z-index: 300;
+    transition: transform .28s cubic-bezier(.34,1.56,.64,1);
+    white-space: nowrap;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+  .sc-note {
+    display: none; font-size: 0.77rem; color: var(--muted);
+    line-height: 1.65; margin-top: 9px; padding-top: 9px;
+    border-top: 1px solid var(--border);
+  }
+  .sc-note.open { display: block; }
+  input, select, textarea {
+    width: 100%; padding: 10px 12px;
+    background: var(--surf2); border: 1.5px solid var(--border);
+    border-radius: 8px; font-size: 0.88rem; color: var(--text);
+    font-family: 'DM Sans', system-ui, sans-serif;
+    transition: border-color .2s, box-shadow .2s;
+    -webkit-appearance: none; appearance: none;
+  }
+  input:focus, select:focus, textarea:focus {
+    outline: none; border-color: var(--primary);
+    box-shadow: 0 0 0 3px var(--primary-glow);
+  }
+  input::placeholder, textarea::placeholder { color: var(--muted); opacity: 1; }
+  select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235c6f85' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 12px center;
+    padding-right: 32px;
+  }
+  select option { background: #182338; color: #dde4ef; }
+  input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(0.55) brightness(0.9); cursor: pointer; }
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  input[type="number"] { -moz-appearance: textfield; }
+  .nav-btn {
+    background: none; border: none; border-bottom: 2.5px solid transparent;
+    color: var(--muted); padding: 11px 4px 9px;
+    font-size: 0.68rem; font-weight: 600; cursor: pointer;
+    flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px;
+    transition: color .18s, border-color .18s;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    letter-spacing: 0.3px; text-transform: uppercase;
+  }
+  .nav-btn.active { color: var(--primary); border-bottom-color: var(--primary); }
+  .km-pill {
+    background: rgba(30,82,232,0.1); border: 1.5px solid rgba(30,82,232,0.28);
+    border-radius: 24px; padding: 8px 14px; cursor: pointer;
+    display: flex; align-items: center; gap: 7px;
+    transition: background .15s, transform .1s; flex-shrink: 0;
+  }
+  .km-pill:active { background: rgba(30,82,232,0.22); transform: scale(0.97); }
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--surf2); border-radius: 2px; }
+</style>
 </head>
 <body>
 
-<!-- ══ HEADER ══ -->
-<header>
-  <div class="hdr-row">
-    <div>
-      <h1>Subaru Crosstrek</h1>
-      <p id="hdr-sub">Cargando...</p>
-    </div>
-    <div class="km-pill" onclick="openKmModal()">
-      🔢 <span id="hdr-km">-- km</span>
-    </div>
-  </div>
-</header>
+<!-- ══ STICKY HEADER + NAV ══ -->
+<div style="position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 28px rgba(0,0,0,.55);">
 
-<!-- ══ NAV ══ -->
-<nav>
-  <button class="active" onclick="tab('dashboard')">📊 Resumen</button>
-  <button onclick="tab('schedule')">🔧 Servicio</button>
-  <button onclick="tab('costs')">💰 Gastos</button>
-  <button onclick="tab('config')">⚙️ Config</button>
-</nav>
+  <header style="background: linear-gradient(180deg, #091728 0%, #0c1b30 100%); padding: 14px 16px 12px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px; max-width: 600px; margin: 0 auto;">
+      <div style="display: flex; align-items: center; gap: 11px;">
+        <svg width="38" height="24" viewBox="0 0 38 24" fill="none">
+          <circle cx="12" cy="12" r="3.6" fill="white"/>
+          <circle cx="21.5" cy="6" r="2.2" fill="white" opacity="0.88"/>
+          <circle cx="28" cy="9" r="2.2" fill="white" opacity="0.88"/>
+          <circle cx="29.5" cy="15.5" r="2.2" fill="white" opacity="0.88"/>
+          <circle cx="25.5" cy="20" r="2.2" fill="white" opacity="0.88"/>
+          <circle cx="19" cy="18.5" r="2.2" fill="white" opacity="0.88"/>
+        </svg>
+        <div>
+          <div style="font-family: 'Rajdhani', sans-serif; font-size: 1.12rem; font-weight: 700; color: #fff; letter-spacing: 2px; line-height: 1.1; text-transform: uppercase;">Crosstrek</div>
+          <div id="hdr-sub" style="font-size: 0.62rem; color: rgba(255,255,255,0.38); margin-top: 2px; letter-spacing: 0.5px; text-transform: uppercase; font-weight: 500; max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Híbrida · Bogotá</div>
+        </div>
+      </div>
+      <div class="km-pill" onclick="openKmModal()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(90,140,240,0.85)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16.5,14.5"/>
+        </svg>
+        <span id="hdr-km" style="font-family: 'Rajdhani', sans-serif; font-size: 0.92rem; font-weight: 700; color: rgba(140,170,240,0.92); letter-spacing: 0.8px;">-- km</span>
+      </div>
+    </div>
+  </header>
+
+  <nav style="background: #0a1525; border-bottom: 1px solid rgba(255,255,255,0.05);">
+    <div style="max-width: 600px; margin: 0 auto; display: flex;">
+      <button id="nav-dashboard" class="nav-btn active" onclick="tab('dashboard')">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/>
+          <rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>
+        </svg>
+        Resumen
+      </button>
+      <button id="nav-schedule" class="nav-btn" onclick="tab('schedule')">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16.5,14.5"/>
+        </svg>
+        Servicio
+      </button>
+      <button id="nav-costs" class="nav-btn" onclick="tab('costs')">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M12 7v10M9.5 9.5h4a1.5 1.5 0 0 1 0 3h-3.5a1.5 1.5 0 0 0 0 3H15"/>
+        </svg>
+        Gastos
+      </button>
+      <button id="nav-config" class="nav-btn" onclick="tab('config')">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M12 2v2m0 16v2M4.22 4.22l1.42 1.42m12.72 12.72 1.42 1.42M2 12h2m16 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+        </svg>
+        Config
+      </button>
+    </div>
+  </nav>
+
+</div>
 
 <!-- ══ MAIN ══ -->
-<main>
+<main style="max-width: 600px; margin: 0 auto; padding: 14px 12px 40px;">
 
   <!-- DASHBOARD -->
   <div id="tab-dashboard" class="tab active">
-    <div class="stats-grid">
-      <div class="stat">
-        <div class="stat-val" id="s-km">0</div>
-        <div class="stat-lbl">KM Actuales</div>
+
+    <div style="display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 12px;">
+      <div style="background: var(--surf); border: 1px solid var(--border); border-radius: 13px; padding: 14px 6px; text-align: center;">
+        <div style="font-size: 0.54rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.7px; color: var(--muted); margin-bottom: 6px;">KM</div>
+        <div id="s-km" style="font-family: 'Rajdhani', sans-serif; font-size: 1.6rem; font-weight: 700; color: var(--primary); line-height: 1;">0</div>
+        <div style="font-size: 0.57rem; color: var(--muted); margin-top: 4px;">actuales</div>
       </div>
-      <div class="stat">
-        <div class="stat-val" id="s-days">0</div>
-        <div class="stat-lbl">Días con el auto</div>
+      <div style="background: var(--surf); border: 1px solid var(--border); border-radius: 13px; padding: 14px 6px; text-align: center;">
+        <div style="font-size: 0.54rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.7px; color: var(--muted); margin-bottom: 6px;">Días</div>
+        <div id="s-days" style="font-family: 'Rajdhani', sans-serif; font-size: 1.6rem; font-weight: 700; color: var(--gold); line-height: 1;">0</div>
+        <div style="font-size: 0.57rem; color: var(--muted); margin-top: 4px;">contigo</div>
       </div>
-      <div class="stat">
-        <div class="stat-val" id="s-overdue" style="color:var(--danger)">0</div>
-        <div class="stat-lbl">Vencidos</div>
+      <div style="background: var(--surf); border: 1px solid var(--border); border-radius: 13px; padding: 14px 6px; text-align: center;">
+        <div style="font-size: 0.54rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.7px; color: var(--muted); margin-bottom: 6px;">Vencidos</div>
+        <div id="s-overdue" style="font-family: 'Rajdhani', sans-serif; font-size: 1.6rem; font-weight: 700; color: var(--red); line-height: 1;">0</div>
+        <div style="font-size: 0.57rem; color: var(--muted); margin-top: 4px;">pendientes</div>
       </div>
     </div>
 
-    <div class="card">
-      <div class="card-title">⚠️ Alertas y Próximos</div>
+    <div style="background: var(--surf); border: 1px solid var(--border); border-radius: 14px; padding: 14px; margin-bottom: 10px;">
+      <div style="font-size: 0.63rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.7px; color: var(--muted); margin-bottom: 12px; display: flex; align-items: center; gap: 6px;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+          <line x1="12" y1="9" x2="12" y2="13"/><circle cx="12" cy="17" r="0.6" fill="currentColor"/>
+        </svg>
+        Alertas y Próximos
+      </div>
       <div id="alerts"></div>
     </div>
 
-    <div class="card">
-      <div class="card-title">📈 Estimado de Gastos</div>
+    <div style="background: var(--surf); border: 1px solid var(--border); border-radius: 14px; padding: 14px;">
+      <div style="font-size: 0.63rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.7px; color: var(--muted); margin-bottom: 12px; display: flex; align-items: center; gap: 6px;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <polyline points="23,6 13.5,15.5 8.5,10.5 1,18"/><polyline points="17,6 23,6 23,12"/>
+        </svg>
+        Estimado de Gastos
+      </div>
       <div id="estimate"></div>
     </div>
+
   </div>
 
   <!-- SCHEDULE -->
@@ -221,79 +228,75 @@
 
   <!-- COSTS -->
   <div id="tab-costs" class="tab">
-    <div class="card">
-      <div class="card-title">➕ Registrar Gasto</div>
-      <div class="form-grid">
-        <div class="fg"><label>Fecha</label><input type="date" id="c-date"></div>
-        <div class="fg"><label>Servicio</label><select id="c-service"><option value="">-- Seleccionar --</option></select></div>
-        <div class="fg"><label>Costo (COP $)</label><input type="number" id="c-cost" placeholder="Ej. 350000" min="0"></div>
-        <div class="fg"><label>KM en el Servicio</label><input type="number" id="c-km" placeholder="Ej. 9670" min="0"></div>
-        <div class="fg"><label>Taller / Técnico</label><input type="text" id="c-shop" placeholder="Ej. Subaru Colombia"></div>
-        <div class="fg"><label>Notas</label><input type="text" id="c-notes" placeholder="Observaciones"></div>
+    <div style="background: var(--surf); border: 1px solid var(--border); border-radius: 14px; padding: 14px; margin-bottom: 10px;">
+      <div style="font-size: 0.63rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.7px; color: var(--muted); margin-bottom: 14px;">Registrar Gasto</div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(145px, 1fr)); gap: 10px;">
+        <div><label style="display:block;font-size:.63rem;font-weight:600;color:var(--muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:.3px">Fecha</label><input type="date" id="c-date"></div>
+        <div><label style="display:block;font-size:.63rem;font-weight:600;color:var(--muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:.3px">Servicio</label><select id="c-service"><option value="">-- Seleccionar --</option></select></div>
+        <div><label style="display:block;font-size:.63rem;font-weight:600;color:var(--muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:.3px">Costo (COP $)</label><input type="number" id="c-cost" placeholder="Ej. 350000" min="0"></div>
+        <div><label style="display:block;font-size:.63rem;font-weight:600;color:var(--muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:.3px">KM en el Servicio</label><input type="number" id="c-km" placeholder="Ej. 9670" min="0"></div>
+        <div><label style="display:block;font-size:.63rem;font-weight:600;color:var(--muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:.3px">Taller / Técnico</label><input type="text" id="c-shop" placeholder="Ej. Subaru Colombia"></div>
+        <div><label style="display:block;font-size:.63rem;font-weight:600;color:var(--muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:.3px">Notas</label><input type="text" id="c-notes" placeholder="Observaciones"></div>
       </div>
-      <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
-        <button class="btn btn-primary" onclick="saveCost()">💾 Registrar</button>
-        <button class="btn btn-outline" onclick="clearCostForm()">✕ Limpiar</button>
+      <div style="margin-top: 13px; display: flex; gap: 8px; flex-wrap: wrap;">
+        <button onclick="saveCost()" style="padding:9px 18px;background:var(--primary);color:#fff;border:none;border-radius:8px;font-size:.83rem;font-weight:600;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:5px">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17,21 17,13 7,13 7,21"/><polyline points="7,3 7,8 15,8"/></svg>
+          Registrar
+        </button>
+        <button onclick="clearCostForm()" style="padding:9px 18px;background:transparent;color:var(--muted);border:1.5px solid var(--border);border-radius:8px;font-size:.83rem;font-weight:600;cursor:pointer;font-family:inherit">Limpiar</button>
       </div>
     </div>
-    <div class="card">
-      <div class="card-title">📋 Historial de Gastos</div>
+    <div style="background: var(--surf); border: 1px solid var(--border); border-radius: 14px; padding: 14px;">
+      <div style="font-size: 0.63rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.7px; color: var(--muted); margin-bottom: 12px;">Historial de Gastos</div>
       <div id="cost-list"></div>
     </div>
   </div>
 
   <!-- CONFIG -->
   <div id="tab-config" class="tab">
-    <div class="card">
-      <div class="card-title">🚗 Datos del Vehículo</div>
-
-      <div class="cfg-section">
-        <div class="cfg-section-title">Vehículo</div>
-        <div class="fg" style="margin-bottom:10px"><label>Modelo / Versión</label><input type="text" id="cfg-model" placeholder="Ej. Crosstrek Híbrida 2026"></div>
-        <div class="cfg-row">
-          <div class="fg"><label>Color</label><input type="text" id="cfg-color" placeholder="Ej. Azul"></div>
-          <div class="fg"><label>Placa</label><input type="text" id="cfg-plate" placeholder="Ej. ABC-123"></div>
+    <div style="background: var(--surf); border: 1px solid var(--border); border-radius: 14px; padding: 14px; margin-bottom: 10px;">
+      <div style="font-size: 0.63rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.7px; color: var(--muted); margin-bottom: 14px;">Datos del Vehículo</div>
+      <div style="margin-bottom: 14px;">
+        <div style="font-size:.59rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);opacity:.7;margin-bottom:9px;padding-bottom:6px;border-bottom:1px solid var(--border)">Vehículo</div>
+        <div style="margin-bottom:8px"><label style="display:block;font-size:.63rem;font-weight:600;color:var(--muted);margin-bottom:5px">Modelo / Versión</label><input type="text" id="cfg-model" placeholder="Ej. Crosstrek Híbrida 2026"></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <div><label style="display:block;font-size:.63rem;font-weight:600;color:var(--muted);margin-bottom:5px">Color</label><input type="text" id="cfg-color" placeholder="Ej. Azul"></div>
+          <div><label style="display:block;font-size:.63rem;font-weight:600;color:var(--muted);margin-bottom:5px">Placa</label><input type="text" id="cfg-plate" placeholder="Ej. ABC-123"></div>
         </div>
       </div>
-
-      <div class="cfg-section">
-        <div class="cfg-section-title">Kilometraje y Fecha</div>
-        <div class="fg" style="margin-bottom:10px"><label>Fecha de Adquisición</label><input type="date" id="cfg-date"></div>
-        <div class="cfg-row">
-          <div class="fg"><label>KM Inicial</label><input type="number" id="cfg-init-km" placeholder="Ej. 20" min="0"></div>
-          <div class="fg"><label>KM Actuales</label><input type="number" id="cfg-cur-km" placeholder="Ej. 500" min="0"></div>
+      <div style="margin-bottom: 14px;">
+        <div style="font-size:.59rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);opacity:.7;margin-bottom:9px;padding-bottom:6px;border-bottom:1px solid var(--border)">Kilometraje y Fecha</div>
+        <div style="margin-bottom:8px"><label style="display:block;font-size:.63rem;font-weight:600;color:var(--muted);margin-bottom:5px">Fecha de Adquisición</label><input type="date" id="cfg-date"></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <div><label style="display:block;font-size:.63rem;font-weight:600;color:var(--muted);margin-bottom:5px">KM Inicial</label><input type="number" id="cfg-init-km" placeholder="Ej. 20" min="0"></div>
+          <div><label style="display:block;font-size:.63rem;font-weight:600;color:var(--muted);margin-bottom:5px">KM Actuales</label><input type="number" id="cfg-cur-km" placeholder="Ej. 500" min="0"></div>
         </div>
       </div>
-
-      <div class="cfg-actions">
-        <button class="btn btn-outline" onclick="loadConfig()">↩ Deshacer</button>
-        <button class="btn btn-primary" onclick="saveConfig()">💾 Guardar</button>
+      <div style="display:flex;gap:8px;justify-content:flex-end;padding-top:12px;border-top:1px solid var(--border)">
+        <button onclick="loadConfig()" style="padding:9px 16px;background:transparent;color:var(--muted);border:1.5px solid var(--border);border-radius:8px;font-size:.82rem;font-weight:600;cursor:pointer;font-family:inherit">↩ Deshacer</button>
+        <button onclick="saveConfig()" style="padding:9px 16px;background:var(--primary);color:#fff;border:none;border-radius:8px;font-size:.82rem;font-weight:600;cursor:pointer;font-family:inherit">💾 Guardar</button>
       </div>
     </div>
 
-    <div class="card">
-      <div class="card-title">🗄️ Respaldo de Datos</div>
-      <p style="font-size:.82rem;color:var(--muted);margin-bottom:12px">Los datos se guardan solo en este dispositivo. Exporta periódicamente como respaldo.</p>
-      <div style="display:flex;flex-direction:column;gap:8px">
-        <button class="btn btn-accent" style="justify-content:center" onclick="exportData()">⬇️ Exportar JSON</button>
-        <button class="btn btn-outline" style="justify-content:center" onclick="document.getElementById('imp-file').click()">⬆️ Importar JSON</button>
-        <input type="file" id="imp-file" accept=".json" style="display:none" onchange="importData(event)">
+    <div style="background: var(--surf); border: 1px solid var(--border); border-radius: 14px; padding: 14px; margin-bottom: 10px;">
+      <div style="font-size: 0.63rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.7px; color: var(--muted); margin-bottom: 10px;">Respaldo de Datos</div>
+      <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 13px; line-height: 1.65;">Los datos se guardan en este dispositivo. Exporta periódicamente.</p>
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <button onclick="exportData()" style="padding:10px;background:var(--gold);color:#1a0800;border:none;border-radius:8px;font-size:.83rem;font-weight:700;cursor:pointer;font-family:inherit;text-align:center">⬇️ Exportar JSON</button>
+        <button onclick="document.getElementById('imp-file').click()" style="padding:10px;background:transparent;color:var(--muted);border:1.5px solid var(--border);border-radius:8px;font-size:.83rem;font-weight:600;cursor:pointer;font-family:inherit;text-align:center">⬆️ Importar JSON</button>
+        <input type="file" id="imp-file" accept=".json" onchange="importData(event)" style="display:none">
       </div>
     </div>
 
-    <div class="card">
-      <div class="card-title">🔄 Actualización de la App</div>
-      <p style="font-size:.82rem;color:var(--muted);margin-bottom:12px">Si la app no muestra los últimos cambios, usa este botón para limpiar el caché y recargar.</p>
-      <button class="btn btn-outline" style="width:100%;justify-content:center;border-color:var(--primary-light);color:var(--primary)" onclick="forceUpdate()">🔄 Limpiar caché y actualizar</button>
+    <div style="background: var(--surf); border: 1px solid var(--border); border-radius: 14px; padding: 14px; margin-bottom: 10px;">
+      <div style="font-size: 0.63rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.7px; color: var(--muted); margin-bottom: 10px;">Actualización de la App</div>
+      <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 13px; line-height: 1.65;">Si la app no muestra los últimos cambios, limpia el caché y recarga.</p>
+      <button onclick="forceUpdate()" style="width:100%;padding:10px;background:rgba(30,82,232,0.08);color:rgba(130,165,240,0.9);border:1.5px solid rgba(30,82,232,0.22);border-radius:8px;font-size:.83rem;font-weight:600;cursor:pointer;font-family:inherit;text-align:center">🔄 Limpiar caché y actualizar</button>
     </div>
 
-    <div class="card">
-      <div class="card-title">ℹ️ Acerca de</div>
-      <p style="font-size:.8rem;color:var(--muted);line-height:1.7">
-        PWA · Funciona sin conexión<br>
-        Datos guardados localmente en el dispositivo<br>
-        Subaru Crosstrek Híbrida 2026 · Bogotá
-      </p>
+    <div style="background: var(--surf); border: 1px solid var(--border); border-radius: 14px; padding: 14px;">
+      <div style="font-size: 0.63rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.7px; color: var(--muted); margin-bottom: 10px;">Acerca de</div>
+      <p style="font-size: 0.79rem; color: var(--muted); line-height: 1.9;">PWA · Funciona sin conexión<br>Datos guardados localmente en el dispositivo<br>Subaru Crosstrek Híbrida 2026 · Bogotá</p>
     </div>
   </div>
 
@@ -301,35 +304,33 @@
 
 <!-- ══ MODAL KM ══ -->
 <div id="modal-km" class="overlay">
-  <div class="modal">
-    <div class="modal-title">📍 Actualizar Kilometraje</div>
-    <div class="fg">
-      <label>KM actuales del vehículo</label>
-      <input type="number" id="km-input" placeholder="Ej. 1500" min="0"
-        style="font-size:1.3rem;text-align:center;font-weight:800"
-        onkeydown="if(event.key==='Enter')updateKm()">
+  <div style="background:var(--surf);border:1px solid rgba(255,255,255,0.12);border-radius:18px;padding:22px;width:100%;max-width:340px;box-shadow:0 24px 64px rgba(0,0,0,.7)">
+    <div style="font-family:'Rajdhani',sans-serif;font-size:1.1rem;font-weight:700;color:var(--text);margin-bottom:16px;letter-spacing:.5px">Actualizar Kilometraje</div>
+    <div>
+      <label style="display:block;font-size:.63rem;font-weight:600;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.4px">KM actuales del vehículo</label>
+      <input type="number" id="km-input" placeholder="Ej. 1500" min="0" onkeydown="if(event.key==='Enter')updateKm()" style="font-size:1.55rem;text-align:center;font-family:'Rajdhani',sans-serif;font-weight:700;letter-spacing:1px">
     </div>
-    <div class="modal-actions">
-      <button class="btn btn-outline" onclick="closeOverlay('modal-km')">Cancelar</button>
-      <button class="btn btn-primary" onclick="updateKm()">✅ Actualizar</button>
+    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:16px">
+      <button onclick="closeOverlay('modal-km')" style="padding:9px 18px;background:transparent;color:var(--muted);border:1.5px solid var(--border);border-radius:8px;font-size:.83rem;font-weight:600;cursor:pointer;font-family:inherit">Cancelar</button>
+      <button onclick="updateKm()" style="padding:9px 18px;background:var(--primary);color:#fff;border:none;border-radius:8px;font-size:.83rem;font-weight:600;cursor:pointer;font-family:inherit">✅ Actualizar</button>
     </div>
   </div>
 </div>
 
 <!-- ══ MODAL SERVICIO ══ -->
 <div id="modal-svc" class="overlay">
-  <div class="modal">
-    <div class="modal-title" id="svc-title">Registrar Servicio</div>
-    <div class="form-grid">
-      <div class="fg"><label>Fecha del Servicio</label><input type="date" id="svc-date"></div>
-      <div class="fg"><label>KM en el Servicio</label><input type="number" id="svc-km" placeholder="KM actuales"></div>
-      <div class="fg" style="grid-column:1/-1"><label>Costo (COP $) — opcional</label><input type="number" id="svc-cost" placeholder="Si tuvo costo, ingrésalo aquí"></div>
-      <div class="fg"><label>Taller / Técnico</label><input type="text" id="svc-shop" placeholder="Nombre del taller"></div>
-      <div class="fg"><label>Notas</label><input type="text" id="svc-notes" placeholder="Observaciones"></div>
+  <div style="background:var(--surf);border:1px solid rgba(255,255,255,0.12);border-radius:18px;padding:22px;width:100%;max-width:440px;box-shadow:0 24px 64px rgba(0,0,0,.7);max-height:90vh;overflow-y:auto">
+    <div id="svc-title" style="font-family:'Rajdhani',sans-serif;font-size:1.1rem;font-weight:700;color:var(--text);margin-bottom:16px;letter-spacing:.5px">Registrar Servicio</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <div><label style="display:block;font-size:.63rem;font-weight:600;color:var(--muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:.3px">Fecha del Servicio</label><input type="date" id="svc-date"></div>
+      <div><label style="display:block;font-size:.63rem;font-weight:600;color:var(--muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:.3px">KM en el Servicio</label><input type="number" id="svc-km" placeholder="KM actuales"></div>
+      <div style="grid-column:1/-1"><label style="display:block;font-size:.63rem;font-weight:600;color:var(--muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:.3px">Costo (COP $) — opcional</label><input type="number" id="svc-cost" placeholder="Si tuvo costo, ingrésalo aquí"></div>
+      <div><label style="display:block;font-size:.63rem;font-weight:600;color:var(--muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:.3px">Taller / Técnico</label><input type="text" id="svc-shop" placeholder="Nombre del taller"></div>
+      <div><label style="display:block;font-size:.63rem;font-weight:600;color:var(--muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:.3px">Notas</label><input type="text" id="svc-notes" placeholder="Observaciones"></div>
     </div>
-    <div class="modal-actions">
-      <button class="btn btn-outline" onclick="closeOverlay('modal-svc')">Cancelar</button>
-      <button class="btn btn-primary" onclick="saveSvc()">✅ Guardar</button>
+    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:16px">
+      <button onclick="closeOverlay('modal-svc')" style="padding:9px 18px;background:transparent;color:var(--muted);border:1.5px solid var(--border);border-radius:8px;font-size:.83rem;font-weight:600;cursor:pointer;font-family:inherit">Cancelar</button>
+      <button onclick="saveSvc()" style="padding:9px 18px;background:var(--primary);color:#fff;border:none;border-radius:8px;font-size:.83rem;font-weight:600;cursor:pointer;font-family:inherit">✅ Guardar</button>
     </div>
   </div>
 </div>
@@ -338,295 +339,198 @@
 <div class="toast" id="toast"></div>
 
 <script>
-// ════════════════════════════════════════════════
-// DATOS DE MANTENIMIENTO
-// ════════════════════════════════════════════════
 const SCHED = [
-  {
-    id:'brake_exercise', name:'Ejercicio de Frenos',
-    freq:'Mensual', months:1, km:null, critical:false,
-    note:'3-4 frenadas fuertes en lugar seguro para quitar óxido de los discos.'
-  },
-  {
-    id:'oil_change', name:'Aceite de Motor y Filtro',
-    freq:'6 Meses', months:6, km:9650, critical:true,
-    note:'Usar aceite Subaru 0W-20 Full Synthetic.'
-  },
-  {
-    id:'tire_rotation', name:'Rotación de Llantas',
-    freq:'6 Meses', months:6, km:9650, critical:false,
-    note:'Aprovechar para revisar suspensión, frenos y batería 12V.'
-  },
-  {
-    id:'cabin_filter', name:'Filtro de Aire de Cabina',
-    freq:'12 Meses', months:12, km:19300, critical:false,
-    note:'Vital para el AC y la energía híbrida. En Bogotá se ensucia más rápido.'
-  },
-  {
-    id:'engine_filter', name:'Filtro de Aire del Motor',
-    freq:'12 Meses', months:12, km:19300, critical:false,
-    note:'Revisar estado en cada visita por contaminación de Bogotá.'
-  },
-  {
-    id:'cvt_fluid', name:'Fluido Transmisión CVT',
-    freq:'2–3 Años', months:30, km:40000, critical:true,
-    note:'Exigir fluido original Subaru CVTF-II. No usar genéricos.'
-  },
-  {
-    id:'brake_service', name:'Limpieza y Lubricación de Frenos',
-    freq:'2–3 Años', months:30, km:48000, critical:false,
-    note:'Remover corrosión en calibradores. Importante por humedad de Bogotá.'
-  },
-  {
-    id:'brake_fluid', name:'Líquido de Frenos (DOT 3/4)',
-    freq:'3 Años', months:36, km:48000, critical:true,
-    note:'Cambiar por tiempo para evitar corrosión del sistema ABS/EBD.'
-  },
-  {
-    id:'spark_plugs', name:'Bujías de Platino/Iridio',
-    freq:'4–5 Años', months:54, km:100000, critical:false,
-    note:'Solo bujías especificadas por Subaru para el motor híbrido DOHC.'
-  },
-  {
-    id:'coolant', name:'Líquido Refrigerante',
-    freq:'5 Años', months:60, km:150000, critical:false,
-    note:'Primera revisión a los 3 años. Cambio completo a los 5 años / 150.000 km.'
-  }
+  {id:'brake_exercise', name:'Ejercicio de Frenos', freq:'Mensual', months:1, km:null, critical:false, note:'3-4 frenadas fuertes en lugar seguro para quitar óxido de los discos.'},
+  {id:'oil_change', name:'Aceite de Motor y Filtro', freq:'6 Meses', months:6, km:9650, critical:true, note:'Usar aceite Subaru 0W-20 Full Synthetic. Primer cambio: dic 2026.'},
+  {id:'tire_rotation', name:'Rotación de Llantas', freq:'6 Meses', months:6, km:9650, critical:false, note:'Aprovechar para revisar suspensión, frenos y batería 12V.'},
+  {id:'cabin_filter', name:'Filtro de Aire de Cabina', freq:'12 Meses', months:12, km:19300, critical:false, note:'Vital para el AC y la energía híbrida. En Bogotá se ensucia más rápido.'},
+  {id:'engine_filter', name:'Filtro de Aire del Motor', freq:'12 Meses', months:12, km:19300, critical:false, note:'Revisar estado en cada visita por contaminación de Bogotá.'},
+  {id:'cvt_fluid', name:'Fluido Transmisión CVT', freq:'2–3 Años', months:30, km:40000, critical:true, note:'Exigir fluido original Subaru CVTF-II. No usar genéricos.'},
+  {id:'brake_service', name:'Limpieza y Lubricación de Frenos', freq:'2–3 Años', months:30, km:48000, critical:false, note:'Remover corrosión en calibradores. Importante por humedad de Bogotá.'},
+  {id:'brake_fluid', name:'Líquido de Frenos (DOT 3/4)', freq:'3 Años', months:36, km:48000, critical:true, note:'Cambiar por tiempo para evitar corrosión del sistema ABS/EBD.'},
+  {id:'spark_plugs', name:'Bujías de Platino/Iridio', freq:'4–5 Años', months:54, km:100000, critical:false, note:'Solo bujías especificadas por Subaru para el motor híbrido DOHC.'},
+  {id:'coolant', name:'Líquido Refrigerante', freq:'5 Años', months:60, km:150000, critical:false, note:'Primera revisión a los 3 años. Cambio completo a los 5 años / 150.000 km.'}
 ];
 
-// ════════════════════════════════════════════════
-// STORAGE
-// ════════════════════════════════════════════════
 const KEY = 'subaru_crosstrek_v1';
+let _svcId = null;
 
-function getData(){
-  try{ return JSON.parse(localStorage.getItem(KEY)) || defaultData(); }
-  catch(e){ return defaultData(); }
+function getData() {
+  try { return JSON.parse(localStorage.getItem(KEY)) || defaultData(); }
+  catch(e) { return defaultData(); }
 }
-function setData(d){ localStorage.setItem(KEY, JSON.stringify(d)); }
-function defaultData(){
-  return {
-    v:1,
-    cfg:{
-      acquisitionDate:'2026-06-13',
-      initialKm:20,
-      currentKm:20,
-      model:'Crosstrek Híbrida 2026',
-      color:'',
-      plate:''
-    },
-    records:{},
-    costs:[]
-  };
+function setData(d) { localStorage.setItem(KEY, JSON.stringify(d)); }
+function defaultData() {
+  return {v:1, cfg:{acquisitionDate:'2026-06-13', initialKm:20, currentKm:20, model:'Crosstrek Híbrida 2026', color:'', plate:''}, records:{}, costs:[]};
 }
 
-// ════════════════════════════════════════════════
-// UTILIDADES
-// ════════════════════════════════════════════════
-function cop(n){ return '$ ' + Number(n).toLocaleString('es-CO'); }
-
-function fmtDate(s){
-  if(!s) return '—';
-  const d = new Date(s+'T00:00:00');
-  return d.toLocaleDateString('es-CO',{day:'2-digit',month:'short',year:'numeric'});
+function cop(n) { return '$ ' + Number(n).toLocaleString('es-CO'); }
+function fmtDate(s) {
+  if (!s) return '—';
+  return new Date(s+'T00:00:00').toLocaleDateString('es-CO',{day:'2-digit',month:'short',year:'numeric'});
 }
-
-function fmtDateShort(s){
-  if(!s) return '—';
-  const d = new Date(s+'T00:00:00');
-  return d.toLocaleDateString('es-CO',{day:'2-digit',month:'short'});
+function fmtDateShort(s) {
+  if (!s) return '—';
+  return new Date(s+'T00:00:00').toLocaleDateString('es-CO',{day:'2-digit',month:'short'});
 }
-
-function addMonths(s, m){
+function addMonths(s, m) {
   const d = new Date(s+'T00:00:00');
   d.setMonth(d.getMonth()+m);
   return d.toISOString().split('T')[0];
 }
-
-function daysDiff(a, b){
-  return Math.round((new Date(b+'T00:00:00')-new Date(a+'T00:00:00'))/(86400000));
+function daysDiff(a, b) {
+  return Math.round((new Date(b+'T00:00:00') - new Date(a+'T00:00:00')) / 86400000);
 }
+function today() { return new Date().toISOString().split('T')[0]; }
+function uid() { return Date.now().toString(36)+Math.random().toString(36).slice(2,6); }
 
-function today(){ return new Date().toISOString().split('T')[0]; }
-function uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,6); }
-
-function status(item, rec, curKm, data){
+function status(item, rec, curKm, data) {
   const base   = rec?.lastDate || data.cfg.acquisitionDate;
   const baseKm = (rec?.lastKm != null) ? rec.lastKm : data.cfg.initialKm;
   const nextDate = addMonths(base, item.months);
   const daysLeft = daysDiff(today(), nextDate);
-
   let kmLeft = null, nextKm = null;
-  if(item.km){
-    nextKm  = baseKm + item.km;
-    kmLeft  = nextKm - curKm;
-  }
-
+  if (item.km) { nextKm = baseKm + item.km; kmLeft = nextKm - curKm; }
   let s = 'ok';
-  if(daysLeft < 0 || (kmLeft !== null && kmLeft < 0))            s = 'overdue';
-  else if(daysLeft <= 30 || (kmLeft !== null && kmLeft <= 500))  s = 'warning';
-
+  if (daysLeft < 0 || (kmLeft !== null && kmLeft < 0)) s = 'overdue';
+  else if (daysLeft <= 30 || (kmLeft !== null && kmLeft <= 500)) s = 'warning';
   return {nextDate, daysLeft, nextKm, kmLeft, s};
 }
 
-function toast(msg){
+function toast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg;
   t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'), 2600);
+  setTimeout(() => t.classList.remove('show'), 2600);
 }
 
-// ════════════════════════════════════════════════
-// TABS
-// ════════════════════════════════════════════════
 const TABS = ['dashboard','schedule','costs','config'];
-function tab(name){
-  TABS.forEach((t,i)=>{
+function tab(name) {
+  TABS.forEach(t => {
     document.getElementById('tab-'+t).classList.toggle('active', t===name);
-    document.querySelectorAll('nav button')[i].classList.toggle('active', t===name);
+    const btn = document.getElementById('nav-'+t);
+    if (btn) btn.classList.toggle('active', t===name);
   });
-  if(name==='dashboard') renderDash();
-  if(name==='schedule')  renderSched();
-  if(name==='costs')     renderCosts();
-  if(name==='config')    loadConfig();
+  if (name==='dashboard') renderDash();
+  if (name==='schedule')  renderSched();
+  if (name==='costs')     renderCosts();
+  if (name==='config')    loadConfig();
 }
 
-// ════════════════════════════════════════════════
-// DASHBOARD
-// ════════════════════════════════════════════════
-function renderDash(){
-  const d = getData();
-  const cur = d.cfg.currentKm;
-
+function renderDash() {
+  const d = getData(), cur = d.cfg.currentKm;
   document.getElementById('hdr-km').textContent = Number(cur).toLocaleString('es-CO')+' km';
   document.getElementById('s-km').textContent   = Number(cur).toLocaleString('es-CO');
   document.getElementById('s-days').textContent = daysDiff(d.cfg.acquisitionDate, today());
 
-  const alerts = SCHED.map(item=>{
-    const rec = d.records[item.id];
-    const st  = status(item, rec, cur, d);
+  const alerts = SCHED.map(item => {
+    const st = status(item, d.records[item.id], cur, d);
     return {item, st};
-  }).filter(x=>x.st.s!=='ok');
+  }).filter(x => x.st.s !== 'ok');
 
-  document.getElementById('s-overdue').textContent = alerts.filter(x=>x.st.s==='overdue').length;
+  document.getElementById('s-overdue').textContent = alerts.filter(x => x.st.s==='overdue').length;
 
   const alertEl = document.getElementById('alerts');
-  if(!alerts.length){
-    alertEl.innerHTML = '<div class="empty"><div class="ico">✅</div><p>Todos los mantenimientos al día</p></div>';
+  if (!alerts.length) {
+    alertEl.innerHTML = '<div style="text-align:center;padding:20px 12px;color:#5c6f85"><div style="font-size:2rem;margin-bottom:8px">✅</div><p style="font-size:.84rem">Todos los mantenimientos al día</p></div>';
   } else {
-    alertEl.innerHTML = alerts.map(({item,st})=>{
+    alertEl.innerHTML = alerts.map(({item, st}) => {
       const over = st.s==='overdue';
-      const cls  = over ? 'alert-danger' : 'alert-warning';
-      const ico  = over ? '🔴' : '🟡';
-      const badge = over ? '<span class="badge b-danger">VENCIDO</span>' : '<span class="badge b-warn">PRÓXIMO</span>';
-
-      let daysText = '';
-      if(over && st.daysLeft<0)     daysText = `Hace ${Math.abs(st.daysLeft)} días`;
-      else if(st.daysLeft <= 30)    daysText = `En ${st.daysLeft} días`;
-
-      let kmText = '';
-      if(st.kmLeft !== null){
-        if(st.kmLeft < 0)       kmText = ` · Exc. ${Math.abs(st.kmLeft).toLocaleString('es-CO')} km`;
-        else if(st.kmLeft<=500) kmText = ` · Faltan ${st.kmLeft.toLocaleString('es-CO')} km`;
+      const bc = over ? '#ef4040' : '#f59e0b';
+      const bg = over ? 'rgba(239,64,64,0.08)' : 'rgba(245,158,11,0.08)';
+      const bt = over ? 'VENCIDO' : 'PRÓXIMO';
+      let dtxt = '';
+      if (over && st.daysLeft<0) dtxt = `Hace ${Math.abs(st.daysLeft)} días`;
+      else if (st.daysLeft<=30)  dtxt = `En ${st.daysLeft} días`;
+      let ktxt = '';
+      if (st.kmLeft!==null) {
+        if (st.kmLeft<0)        ktxt = ` · Exc. ${Math.abs(st.kmLeft).toLocaleString('es-CO')} km`;
+        else if(st.kmLeft<=500) ktxt = ` · Faltan ${st.kmLeft.toLocaleString('es-CO')} km`;
       }
-
-      return `<div class="alert-row ${cls}">
-        <span class="al-ico">${ico}</span>
-        <div class="al-body">
-          <div class="al-name">${item.name}${item.critical?' ⚡':''}</div>
-          <div class="al-sub">${fmtDate(st.nextDate)} · ${daysText}${kmText}</div>
+      return `<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;margin-bottom:6px;background:${bg};border-left:3px solid ${bc}">
+        <div style="flex:1;min-width:0">
+          <div style="font-size:.85rem;font-weight:600;color:#dde4ef;line-height:1.25">${item.name}${item.critical?` <span style="background:#ef4040;color:#fff;padding:1px 5px;border-radius:4px;font-size:.6rem;font-weight:800;vertical-align:middle">⚡</span>`:''}</div>
+          <div style="font-size:.71rem;color:#5c6f85;margin-top:2px">${fmtDate(st.nextDate)} · ${dtxt}${ktxt}</div>
         </div>
-        ${badge}
+        <span style="background:${bc}22;color:${bc};padding:3px 9px;border-radius:8px;font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.3px;white-space:nowrap;flex-shrink:0">${bt}</span>
       </div>`;
     }).join('');
   }
-
   renderEstimate(d);
 }
 
-function renderEstimate(d){
+function renderEstimate(d) {
   const el = document.getElementById('estimate');
-  if(!d.costs.length){
-    el.innerHTML='<div class="empty"><div class="ico">📊</div><p>Registra gastos para ver el estimado anual</p></div>';
+  if (!d.costs.length) {
+    el.innerHTML = '<div style="text-align:center;padding:20px 12px;color:#5c6f85"><div style="font-size:2rem;margin-bottom:8px">📊</div><p style="font-size:.84rem">Registra gastos para ver el estimado anual</p></div>';
     return;
   }
   const total   = d.costs.reduce((s,e)=>s+(Number(e.cost)||0), 0);
   const days    = Math.max(daysDiff(d.cfg.acquisitionDate, today()), 1);
   const annual  = Math.round(total/days*365);
   const monthly = Math.round(annual/12);
+  const C = 'background:#182338;border-radius:10px;padding:12px 8px;border:1px solid rgba(255,255,255,0.05);text-align:center';
   el.innerHTML = `
-    <div class="est-grid">
-      <div class="est-item"><div class="est-val">${cop(total)}</div><div class="est-lbl">Total Gastado</div></div>
-      <div class="est-item"><div class="est-val">${cop(annual)}</div><div class="est-lbl">Estimado Anual</div></div>
-      <div class="est-item"><div class="est-val">${cop(monthly)}</div><div class="est-lbl">Estimado Mensual</div></div>
-      <div class="est-item"><div class="est-val">${d.costs.length}</div><div class="est-lbl">Servicios Registrados</div></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <div style="${C}"><div style="font-family:'Rajdhani',sans-serif;font-size:1.05rem;font-weight:700;color:#1e52e8">${cop(total)}</div><div style="font-size:.64rem;color:#5c6f85;margin-top:4px">Total Gastado</div></div>
+      <div style="${C}"><div style="font-family:'Rajdhani',sans-serif;font-size:1.05rem;font-weight:700;color:#1e52e8">${cop(annual)}</div><div style="font-size:.64rem;color:#5c6f85;margin-top:4px">Estimado Anual</div></div>
+      <div style="${C}"><div style="font-family:'Rajdhani',sans-serif;font-size:1.05rem;font-weight:700;color:#1e52e8">${cop(monthly)}</div><div style="font-size:.64rem;color:#5c6f85;margin-top:4px">Estimado Mensual</div></div>
+      <div style="${C}"><div style="font-family:'Rajdhani',sans-serif;font-size:1.05rem;font-weight:700;color:#1e52e8">${d.costs.length}</div><div style="font-size:.64rem;color:#5c6f85;margin-top:4px">Servicios</div></div>
     </div>
-    <p style="font-size:.69rem;color:var(--muted);margin-top:9px">* Basado en ${days} días de uso registrado.</p>`;
+    <p style="font-size:.65rem;color:#5c6f85;margin-top:10px">* Basado en ${days} días de uso registrado.</p>`;
 }
 
-// ════════════════════════════════════════════════
-// SCHEDULE — tarjetas móviles, ordenadas por urgencia
-// ════════════════════════════════════════════════
-function renderSched(){
-  const d   = getData();
-  const cur = d.cfg.currentKm;
-
-  const items = SCHED.map(item=>{
-    const rec = d.records[item.id];
-    const st  = status(item, rec, cur, d);
-    return {item, rec, st};
-  });
-
+function renderSched() {
+  const d = getData(), cur = d.cfg.currentKm;
   const order = {overdue:0, warning:1, ok:2};
-  items.sort((a,b)=> order[a.st.s] - order[b.st.s]);
+  const items = SCHED.map(item => {
+    const rec = d.records[item.id];
+    return {item, rec, st: status(item, rec, cur, d)};
+  }).sort((a,b) => order[a.st.s] - order[b.st.s]);
 
-  const el = document.getElementById('sched-list');
-  el.innerHTML = items.map(({item, rec, st})=>{
-    const bc = st.s==='overdue'?'b-danger':st.s==='warning'?'b-warn':'b-ok';
-    const bt = st.s==='overdue'?'VENCIDO':st.s==='warning'?'PRÓXIMO':'AL DÍA';
+  document.getElementById('sched-list').innerHTML = items.map(({item, rec, st}) => {
+    const bc  = st.s==='overdue' ? '#ef4040' : st.s==='warning' ? '#f59e0b' : '#10d07c';
+    const bt  = st.s==='overdue' ? 'VENCIDO' : st.s==='warning' ? 'PRÓXIMO' : 'AL DÍA';
+    const dtxt = st.daysLeft>=0 ? `en ${st.daysLeft} días` : `hace ${Math.abs(st.daysLeft)} días`;
 
-    const daysText = st.daysLeft>=0
-      ? `en ${st.daysLeft} días`
-      : `hace ${Math.abs(st.daysLeft)} días`;
-
-    let progressHtml = '';
-    if(item.km){
-      const base  = (rec?.lastKm != null) ? rec.lastKm : d.cfg.initialKm;
-      const used  = cur - base;
-      const pct   = Math.min(100, Math.round(used / item.km * 100));
-      const pc    = pct>=100?'c-danger':pct>=80?'c-warn':'c-ok';
-      const falta = item.km - used;
-      const sub   = falta>0
-        ? `Faltan ${falta.toLocaleString('es-CO')} km`
-        : `Excedido ${Math.abs(falta).toLocaleString('es-CO')} km`;
-      progressHtml = `<div class="prog-wrap ${pc}">
-        <div class="prog-bar"><div class="prog-fill" style="width:${pct}%"></div></div>
-        <span class="prog-txt">${pct}% · ${sub}</span>
+    let prog = '';
+    if (item.km) {
+      const base = (rec?.lastKm!=null) ? rec.lastKm : d.cfg.initialKm;
+      const used = cur - base;
+      const pct  = Math.min(100, Math.round(used/item.km*100));
+      const fg   = pct>=100 ? 'linear-gradient(90deg,#ef4040,#c0392b)' : pct>=80 ? 'linear-gradient(90deg,#f59e0b,#e67e00)' : 'linear-gradient(90deg,#10d07c,#0ab368)';
+      const falt = item.km - used;
+      const sub  = falt>0 ? `Faltan ${falt.toLocaleString('es-CO')} km` : `Excedido ${Math.abs(falt).toLocaleString('es-CO')} km`;
+      prog = `<div style="display:flex;align-items:center;gap:8px;margin:7px 0 2px">
+        <div style="flex:1;height:4px;background:rgba(255,255,255,0.07);border-radius:2px;overflow:hidden">
+          <div style="height:100%;width:${pct}%;background:${fg};border-radius:2px"></div>
+        </div>
+        <span style="font-size:.65rem;color:#5c6f85;white-space:nowrap">${pct}% · ${sub}</span>
       </div>`;
     }
 
-    const lastText = rec?.lastDate
+    const lastTxt = rec?.lastDate
       ? `Últ: ${fmtDateShort(rec.lastDate)}${rec.lastKm!=null?' · '+Number(rec.lastKm).toLocaleString('es-CO')+' km':''}`
       : 'Sin registros';
 
-    return `<div class="svc-card c-${st.s}">
-      <div class="sc-head">
+    return `<div style="background:#111c2e;border-top:1px solid rgba(255,255,255,0.07);border-right:1px solid rgba(255,255,255,0.07);border-bottom:1px solid rgba(255,255,255,0.07);border-left:4px solid ${bc};border-radius:12px;padding:12px 13px 10px;margin-bottom:9px">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:4px">
         <div>
-          <div class="sc-name">${item.name}${item.critical?' <span class="badge b-critical">⚡</span>':''}</div>
-          <div class="sc-freq">${item.freq}${item.km?' · '+item.km.toLocaleString('es-CO')+' km':''}</div>
+          <div style="font-size:.87rem;font-weight:600;color:#dde4ef;line-height:1.3">${item.name}${item.critical?` <span style="background:#ef4040;color:#fff;padding:1px 5px;border-radius:4px;font-size:.58rem;font-weight:800">⚡</span>`:''}</div>
+          <div style="font-size:.67rem;color:#5c6f85;margin-top:2px">${item.freq}${item.km?' · '+item.km.toLocaleString('es-CO')+' km':''}</div>
         </div>
-        <span class="badge ${bc}">${bt}</span>
+        <span style="background:${bc}22;color:${bc};padding:3px 9px;border-radius:8px;font-size:.6rem;font-weight:800;text-transform:uppercase;letter-spacing:.3px;white-space:nowrap;flex-shrink:0">${bt}</span>
       </div>
-      <div class="sc-next">
-        <span class="sc-date">${fmtDate(st.nextDate)}</span>
-        <span class="sc-days ${st.s}">${daysText}</span>
+      <div style="display:flex;align-items:baseline;flex-wrap:wrap;gap:5px;margin:4px 0">
+        <span style="font-size:.83rem;font-weight:700;color:#dde4ef">${fmtDate(st.nextDate)}</span>
+        <span style="font-size:.73rem;font-weight:600;color:${bc}">${dtxt}</span>
       </div>
-      ${progressHtml}
-      <div class="sc-foot">
-        <span class="sc-last">${lastText}</span>
+      ${prog}
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;flex-wrap:wrap;gap:5px">
+        <span style="font-size:.67rem;color:#5c6f85">${lastTxt}</span>
         <div style="display:flex;gap:6px;align-items:center">
-          <button class="btn-info" onclick="toggleNote(this)" title="Ver descripción">ℹ️</button>
-          <button class="btn btn-primary btn-sm" onclick="openSvc('${item.id}')">✓ Registrar</button>
+          <button onclick="toggleNote(this)" style="background:transparent;border:1.5px solid rgba(255,255,255,0.1);color:#5c6f85;padding:5px 9px;font-size:.78rem;border-radius:7px;cursor:pointer;line-height:1">ℹ️</button>
+          <button onclick="openSvc('${item.id}')" style="padding:6px 13px;background:#1e52e8;color:#fff;border:none;border-radius:7px;font-size:.77rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif">✓ Registrar</button>
         </div>
       </div>
       <div class="sc-note">${item.note}</div>
@@ -634,24 +538,18 @@ function renderSched(){
   }).join('');
 }
 
-// ════════════════════════════════════════════════
-// TOGGLE DESCRIPCIÓN
-// ════════════════════════════════════════════════
-function toggleNote(btn){
-  const note = btn.closest('.svc-card').querySelector('.sc-note');
+function toggleNote(btn) {
+  const note = btn.closest('[style*="border-left"]').querySelector('.sc-note');
   const open = note.classList.toggle('open');
-  btn.classList.toggle('active', open);
+  btn.style.background  = open ? 'rgba(30,82,232,0.12)' : 'transparent';
+  btn.style.color       = open ? '#8faee8' : '#5c6f85';
+  btn.style.borderColor = open ? 'rgba(30,82,232,0.28)' : 'rgba(255,255,255,0.1)';
   btn.textContent = open ? '✕' : 'ℹ️';
 }
 
-// ════════════════════════════════════════════════
-// MODAL SERVICIO
-// ════════════════════════════════════════════════
-let _svcId = null;
-
-function openSvc(id){
-  const item = SCHED.find(i=>i.id===id);
+function openSvc(id) {
   _svcId = id;
+  const item = SCHED.find(i=>i.id===id);
   document.getElementById('svc-title').textContent = '✓ '+item.name;
   document.getElementById('svc-date').value  = today();
   document.getElementById('svc-km').value    = getData().cfg.currentKm;
@@ -661,25 +559,20 @@ function openSvc(id){
   document.getElementById('modal-svc').classList.add('open');
 }
 
-function saveSvc(){
-  if(!_svcId) return;
-  const date = document.getElementById('svc-date').value;
-  const km   = document.getElementById('svc-km').value;
-  const cost = document.getElementById('svc-cost').value;
-  const shop = document.getElementById('svc-shop').value;
-  const notes= document.getElementById('svc-notes').value;
-  if(!date||!km){ toast('⚠️ Ingresa fecha y kilometraje'); return; }
-
+function saveSvc() {
+  if (!_svcId) return;
+  const date  = document.getElementById('svc-date').value;
+  const km    = document.getElementById('svc-km').value;
+  const cost  = document.getElementById('svc-cost').value;
+  const shop  = document.getElementById('svc-shop').value;
+  const notes = document.getElementById('svc-notes').value;
+  if (!date||!km) { toast('⚠️ Ingresa fecha y kilometraje'); return; }
   const d = getData();
   d.records[_svcId] = {lastDate:date, lastKm:Number(km), shop, notes};
-  if(cost && Number(cost)>0){
-    d.costs.unshift({
-      id:uid(), date, serviceId:_svcId,
-      desc:SCHED.find(i=>i.id===_svcId).name,
-      cost:Number(cost), mileage:Number(km), shop, notes
-    });
+  if (cost && Number(cost)>0) {
+    d.costs.unshift({id:uid(), date, serviceId:_svcId, desc:SCHED.find(i=>i.id===_svcId).name, cost:Number(cost), mileage:Number(km), shop, notes});
   }
-  if(Number(km) > d.cfg.currentKm) d.cfg.currentKm = Number(km);
+  if (Number(km) > d.cfg.currentKm) d.cfg.currentKm = Number(km);
   setData(d);
   closeOverlay('modal-svc');
   renderSched();
@@ -687,18 +580,15 @@ function saveSvc(){
   toast('✅ Servicio registrado');
 }
 
-// ════════════════════════════════════════════════
-// MODAL KM
-// ════════════════════════════════════════════════
-function openKmModal(){
+function openKmModal() {
   document.getElementById('km-input').value = getData().cfg.currentKm;
   document.getElementById('modal-km').classList.add('open');
-  setTimeout(()=>document.getElementById('km-input').focus(), 100);
+  setTimeout(() => document.getElementById('km-input').focus(), 100);
 }
 
-function updateKm(){
+function updateKm() {
   const km = Number(document.getElementById('km-input').value);
-  if(!km||km<0){ toast('⚠️ KM inválido'); return; }
+  if (!km||km<0) { toast('⚠️ KM inválido'); return; }
   const d = getData();
   d.cfg.currentKm = km;
   setData(d);
@@ -708,65 +598,54 @@ function updateKm(){
   toast('✅ Kilometraje actualizado');
 }
 
-function closeOverlay(id){
+function closeOverlay(id) {
   document.getElementById(id).classList.remove('open');
   _svcId = null;
 }
 
-// ════════════════════════════════════════════════
-// COSTS
-// ════════════════════════════════════════════════
-function renderCosts(){
+function renderCosts() {
   const d = getData();
   const sel = document.getElementById('c-service');
-  sel.innerHTML = '<option value="">-- Seleccionar servicio --</option>' +
-    SCHED.map(i=>`<option value="${i.id}">${i.name}</option>`).join('');
-  if(!document.getElementById('c-date').value)
-    document.getElementById('c-date').value = today();
-
+  sel.innerHTML = '<option value="">-- Seleccionar servicio --</option>'+SCHED.map(i=>`<option value="${i.id}">${i.name}</option>`).join('');
+  if (!document.getElementById('c-date').value) document.getElementById('c-date').value = today();
   const el = document.getElementById('cost-list');
-  if(!d.costs.length){
-    el.innerHTML='<div class="empty"><div class="ico">💳</div><p>No hay gastos registrados aún</p></div>';
+  if (!d.costs.length) {
+    el.innerHTML = '<div style="text-align:center;padding:22px;color:#5c6f85"><div style="font-size:2rem;margin-bottom:8px">💳</div><p style="font-size:.84rem">No hay gastos registrados aún</p></div>';
     return;
   }
-  const sorted = [...d.costs].sort((a,b)=>b.date.localeCompare(a.date));
-  el.innerHTML = sorted.map(e=>`
-    <div class="cost-item">
-      <div class="cost-info">
-        <strong>${e.desc||e.serviceId}</strong>
-        <div class="cost-meta">📅 ${fmtDate(e.date)}${e.mileage?' · 🔢 '+Number(e.mileage).toLocaleString('es-CO')+' km':''}${e.shop?' · '+e.shop:''}</div>
-        ${e.notes?`<div class="cost-meta">📝 ${e.notes}</div>`:''}
+  el.innerHTML = [...d.costs].sort((a,b)=>b.date.localeCompare(a.date)).map(e=>`
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.05);gap:10px">
+      <div style="flex:1;min-width:0">
+        <strong style="font-size:.85rem;color:#dde4ef;display:block;font-weight:600">${e.desc||e.serviceId}</strong>
+        <div style="font-size:.71rem;color:#5c6f85;margin-top:3px;line-height:1.5">📅 ${fmtDate(e.date)}${e.mileage?' · 🔢 '+Number(e.mileage).toLocaleString('es-CO')+' km':''}${e.shop?' · '+e.shop:''}</div>
+        ${e.notes?`<div style="font-size:.71rem;color:#5c6f85;line-height:1.5">📝 ${e.notes}</div>`:''}
       </div>
-      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:7px;flex-shrink:0">
-        <div class="cost-amt">${cop(e.cost)}</div>
-        <button class="btn-del" onclick="delCost('${e.id}')">🗑️</button>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0">
+        <div style="font-family:'Rajdhani',sans-serif;font-size:.96rem;font-weight:700;color:#1e52e8">${cop(e.cost)}</div>
+        <button onclick="delCost('${e.id}')" style="background:transparent;color:#ef4040;border:1.5px solid rgba(239,64,64,0.35);padding:3px 9px;font-size:.72rem;border-radius:7px;cursor:pointer;font-weight:700;font-family:'DM Sans',sans-serif">🗑️</button>
       </div>
     </div>`).join('');
 }
 
-function saveCost(){
+function saveCost() {
   const date  = document.getElementById('c-date').value;
   const svcId = document.getElementById('c-service').value;
   const cost  = document.getElementById('c-cost').value;
   const km    = document.getElementById('c-km').value;
   const shop  = document.getElementById('c-shop').value;
   const notes = document.getElementById('c-notes').value;
-  if(!date||!cost){ toast('⚠️ Ingresa fecha y costo'); return; }
+  if (!date||!cost) { toast('⚠️ Ingresa fecha y costo'); return; }
   const d = getData();
   const item = SCHED.find(i=>i.id===svcId);
-  d.costs.unshift({
-    id:uid(), date, serviceId:svcId||'other',
-    desc:item?.name||'Otro servicio',
-    cost:Number(cost), mileage:km?Number(km):null, shop, notes
-  });
+  d.costs.unshift({id:uid(), date, serviceId:svcId||'other', desc:item?.name||'Otro servicio', cost:Number(cost), mileage:km?Number(km):null, shop, notes});
   setData(d);
   clearCostForm();
   renderCosts();
   toast('✅ Gasto registrado');
 }
 
-function delCost(id){
-  if(!confirm('¿Eliminar este registro?')) return;
+function delCost(id) {
+  if (!confirm('¿Eliminar este registro?')) return;
   const d = getData();
   d.costs = d.costs.filter(e=>e.id!==id);
   setData(d);
@@ -774,19 +653,16 @@ function delCost(id){
   toast('🗑️ Eliminado');
 }
 
-function clearCostForm(){
-  document.getElementById('c-date').value   = today();
-  document.getElementById('c-service').value= '';
-  document.getElementById('c-cost').value   = '';
-  document.getElementById('c-km').value     = '';
-  document.getElementById('c-shop').value   = '';
-  document.getElementById('c-notes').value  = '';
+function clearCostForm() {
+  document.getElementById('c-date').value    = today();
+  document.getElementById('c-service').value = '';
+  document.getElementById('c-cost').value    = '';
+  document.getElementById('c-km').value      = '';
+  document.getElementById('c-shop').value    = '';
+  document.getElementById('c-notes').value   = '';
 }
 
-// ════════════════════════════════════════════════
-// CONFIG
-// ════════════════════════════════════════════════
-function loadConfig(){
+function loadConfig() {
   const c = getData().cfg;
   document.getElementById('cfg-date').value    = c.acquisitionDate||'';
   document.getElementById('cfg-init-km').value = c.initialKm??'';
@@ -796,7 +672,7 @@ function loadConfig(){
   document.getElementById('cfg-plate').value   = c.plate||'';
 }
 
-function saveConfig(){
+function saveConfig() {
   const d = getData();
   d.cfg.acquisitionDate = document.getElementById('cfg-date').value;
   d.cfg.initialKm  = Number(document.getElementById('cfg-init-km').value)||0;
@@ -805,14 +681,13 @@ function saveConfig(){
   d.cfg.color      = document.getElementById('cfg-color').value;
   d.cfg.plate      = document.getElementById('cfg-plate').value;
   setData(d);
+  const plate = d.cfg.plate ? ' · '+d.cfg.plate : '';
+  document.getElementById('hdr-sub').textContent = (d.cfg.model||'Híbrida')+plate+' · Bogotá';
   renderDash();
   toast('✅ Configuración guardada');
 }
 
-// ════════════════════════════════════════════════
-// EXPORT / IMPORT
-// ════════════════════════════════════════════════
-function exportData(){
+function exportData() {
   const blob = new Blob([JSON.stringify(getData(),null,2)],{type:'application/json'});
   const url  = URL.createObjectURL(blob);
   const a    = Object.assign(document.createElement('a'),{href:url,download:'crosstrek_'+today()+'.json'});
@@ -821,65 +696,55 @@ function exportData(){
   toast('✅ Datos exportados');
 }
 
-function importData(ev){
+function importData(ev) {
   const file = ev.target.files[0];
-  if(!file) return;
+  if (!file) return;
   const r = new FileReader();
-  r.onload = e=>{
-    try{
+  r.onload = e => {
+    try {
       const d = JSON.parse(e.target.result);
-      if(!d.cfg) throw new Error('invalid');
-      if(!confirm('¿Importar datos? Esto sobreescribirá los datos actuales.')) return;
+      if (!d.cfg) throw new Error();
+      if (!confirm('¿Importar datos? Esto sobreescribirá los datos actuales.')) return;
       setData(d);
       renderDash();
       toast('✅ Datos importados');
-    }catch(_){ toast('❌ Archivo JSON inválido'); }
+    } catch(_) { toast('❌ Archivo JSON inválido'); }
   };
   r.readAsText(file);
-  ev.target.value='';
+  ev.target.value = '';
 }
 
-// ════════════════════════════════════════════════
-// CERRAR OVERLAYS AL CLICK FUERA
-// ════════════════════════════════════════════════
-document.querySelectorAll('.overlay').forEach(el=>{
-  el.addEventListener('click',e=>{ if(e.target===el){ el.classList.remove('open'); _svcId=null; }});
-});
-
-// ════════════════════════════════════════════════
-// FORZAR ACTUALIZACIÓN
-// ════════════════════════════════════════════════
-async function forceUpdate(){
+async function forceUpdate() {
   try {
-    if('serviceWorker' in navigator){
+    if ('serviceWorker' in navigator) {
       const regs = await navigator.serviceWorker.getRegistrations();
-      await Promise.all(regs.map(r => r.unregister()));
+      await Promise.all(regs.map(r=>r.unregister()));
     }
-    if('caches' in window){
+    if ('caches' in window) {
       const keys = await caches.keys();
-      await Promise.all(keys.map(k => caches.delete(k)));
+      await Promise.all(keys.map(k=>caches.delete(k)));
     }
   } catch(e){}
   window.location.reload(true);
 }
 
-// ════════════════════════════════════════════════
-// PWA
-// ════════════════════════════════════════════════
-if('serviceWorker' in navigator){
-  window.addEventListener('load',()=>{
-    navigator.serviceWorker.register('./sw.js').catch(err=>console.warn('SW:',err));
+document.querySelectorAll('.overlay').forEach(el => {
+  el.addEventListener('click', e => {
+    if (e.target===el) { el.classList.remove('open'); _svcId=null; }
+  });
+});
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch(()=>{});
   });
 }
 
-// ════════════════════════════════════════════════
-// INIT
-// ════════════════════════════════════════════════
-(function(){
-  const d   = getData();
-  const sub = document.getElementById('hdr-sub');
-  const plate = d.cfg.plate ? ' · ' + d.cfg.plate : '';
-  sub.textContent = (d.cfg.model||'Híbrida') + plate + ' · Bogotá';
+// Init
+(function() {
+  const d = getData();
+  const plate = d.cfg.plate ? ' · '+d.cfg.plate : '';
+  document.getElementById('hdr-sub').textContent = (d.cfg.model||'Híbrida')+plate+' · Bogotá';
   renderDash();
 })();
 </script>

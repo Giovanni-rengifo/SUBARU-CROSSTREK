@@ -1,4 +1,4 @@
-const CACHE = 'crosstrek-v6';
+const CACHE = 'crosstrek-v7';
 
 self.addEventListener('install', evt => {
   self.skipWaiting();
