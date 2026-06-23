@@ -282,6 +282,12 @@
     </div>
 
     <div class="card">
+      <div class="card-title">🔄 Actualización de la App</div>
+      <p style="font-size:.82rem;color:var(--muted);margin-bottom:12px">Si la app no muestra los últimos cambios, usa este botón para limpiar el caché y recargar.</p>
+      <button class="btn btn-outline" style="width:100%;justify-content:center;border-color:var(--primary-light);color:var(--primary)" onclick="forceUpdate()">🔄 Limpiar caché y actualizar</button>
+    </div>
+
+    <div class="card">
       <div class="card-title">ℹ️ Acerca de</div>
       <p style="font-size:.8rem;color:var(--muted);line-height:1.7">
         PWA · Funciona sin conexión<br>
@@ -839,6 +845,23 @@ function importData(ev){
 document.querySelectorAll('.overlay').forEach(el=>{
   el.addEventListener('click',e=>{ if(e.target===el){ el.classList.remove('open'); _svcId=null; }});
 });
+
+// ════════════════════════════════════════════════
+// FORZAR ACTUALIZACIÓN
+// ════════════════════════════════════════════════
+async function forceUpdate(){
+  try {
+    if('serviceWorker' in navigator){
+      const regs = await navigator.serviceWorker.getRegistrations();
+      await Promise.all(regs.map(r => r.unregister()));
+    }
+    if('caches' in window){
+      const keys = await caches.keys();
+      await Promise.all(keys.map(k => caches.delete(k)));
+    }
+  } catch(e){}
+  window.location.reload(true);
+}
 
 // ════════════════════════════════════════════════
 // PWA
