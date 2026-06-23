@@ -153,8 +153,11 @@
     .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(100px);background:#003366;color:#fff;padding:10px 22px;border-radius:26px;font-size:.86rem;font-weight:600;box-shadow:0 4px 20px rgba(0,0,0,.3);z-index:300;transition:transform .28s cubic-bezier(.34,1.56,.64,1)}
     .toast.show{transform:translateX(-50%) translateY(0)}
 
-    /* ── ACTION BAR ── */
-    .action-bar{position:sticky;bottom:0;background:#fff;border-top:1px solid var(--border);padding:10px 14px;display:flex;gap:8px;justify-content:flex-end;margin:-13px -14px 0;border-radius:0 0 var(--radius) var(--radius)}
+    /* ── CONFIG ── */
+    .cfg-section{margin-bottom:14px}
+    .cfg-section-title{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:8px}
+    .cfg-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .cfg-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:16px;padding-top:14px;border-top:1px solid var(--border)}
   </style>
 </head>
 <body>
@@ -243,33 +246,47 @@
   <div id="tab-config" class="tab">
     <div class="card">
       <div class="card-title">🚗 Datos del Vehículo</div>
-      <div class="form-grid">
-        <div class="fg"><label>Fecha de Adquisición</label><input type="date" id="cfg-date"></div>
-        <div class="fg"><label>KM al Adquirirlo</label><input type="number" id="cfg-init-km" placeholder="Ej. 20" min="0"></div>
-        <div class="fg"><label>KM Actuales</label><input type="number" id="cfg-cur-km" placeholder="Ej. 500" min="0"></div>
-        <div class="fg"><label>Modelo / Versión</label><input type="text" id="cfg-model" placeholder="Ej. Crosstrek Híbrida 2026"></div>
-        <div class="fg"><label>Color</label><input type="text" id="cfg-color" placeholder="Ej. Azul Magnetismo"></div>
-        <div class="fg"><label>Placa</label><input type="text" id="cfg-plate" placeholder="Ej. ABC-123"></div>
+
+      <div class="cfg-section">
+        <div class="cfg-section-title">Vehículo</div>
+        <div class="fg" style="margin-bottom:10px"><label>Modelo / Versión</label><input type="text" id="cfg-model" placeholder="Ej. Crosstrek Híbrida 2026"></div>
+        <div class="cfg-row">
+          <div class="fg"><label>Color</label><input type="text" id="cfg-color" placeholder="Ej. Azul"></div>
+          <div class="fg"><label>Placa</label><input type="text" id="cfg-plate" placeholder="Ej. ABC-123"></div>
+        </div>
       </div>
-      <div class="action-bar">
+
+      <div class="cfg-section">
+        <div class="cfg-section-title">Kilometraje y Fecha</div>
+        <div class="fg" style="margin-bottom:10px"><label>Fecha de Adquisición</label><input type="date" id="cfg-date"></div>
+        <div class="cfg-row">
+          <div class="fg"><label>KM Inicial</label><input type="number" id="cfg-init-km" placeholder="Ej. 20" min="0"></div>
+          <div class="fg"><label>KM Actuales</label><input type="number" id="cfg-cur-km" placeholder="Ej. 500" min="0"></div>
+        </div>
+      </div>
+
+      <div class="cfg-actions">
         <button class="btn btn-outline" onclick="loadConfig()">↩ Deshacer</button>
         <button class="btn btn-primary" onclick="saveConfig()">💾 Guardar</button>
       </div>
     </div>
+
     <div class="card">
       <div class="card-title">🗄️ Respaldo de Datos</div>
-      <p style="font-size:.82rem;color:var(--muted);margin-bottom:11px">Exporta o importa todos los datos. Se guardan solo en este dispositivo.</p>
-      <div style="display:flex;gap:8px;flex-wrap:wrap">
-        <button class="btn btn-accent" onclick="exportData()">⬇️ Exportar JSON</button>
-        <button class="btn btn-outline" onclick="document.getElementById('imp-file').click()">⬆️ Importar JSON</button>
+      <p style="font-size:.82rem;color:var(--muted);margin-bottom:12px">Los datos se guardan solo en este dispositivo. Exporta periódicamente como respaldo.</p>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <button class="btn btn-accent" style="justify-content:center" onclick="exportData()">⬇️ Exportar JSON</button>
+        <button class="btn btn-outline" style="justify-content:center" onclick="document.getElementById('imp-file').click()">⬆️ Importar JSON</button>
         <input type="file" id="imp-file" accept=".json" style="display:none" onchange="importData(event)">
       </div>
     </div>
+
     <div class="card">
       <div class="card-title">ℹ️ Acerca de</div>
-      <p style="font-size:.8rem;color:var(--muted);line-height:1.6">
-        PWA · Funciona sin conexión · Datos guardados en el dispositivo.<br>
-        Subaru Crosstrek Híbrida 2026 · Condiciones severas · Bogotá
+      <p style="font-size:.8rem;color:var(--muted);line-height:1.7">
+        PWA · Funciona sin conexión<br>
+        Datos guardados localmente en el dispositivo<br>
+        Subaru Crosstrek Híbrida 2026 · Bogotá
       </p>
     </div>
   </div>
