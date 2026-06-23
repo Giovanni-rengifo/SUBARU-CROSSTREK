@@ -1,4 +1,4 @@
-const CACHE = 'crosstrek-v3';
+const CACHE = 'crosstrek-v4';
 const PRECACHE = ['./', './index.html', './manifest.json', './subaru-logo.png'];
 
 self.addEventListener('install', evt => {
