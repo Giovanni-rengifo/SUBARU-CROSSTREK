@@ -82,6 +82,10 @@
     .sc-days.overdue{color:var(--danger)}
     .sc-foot{display:flex;justify-content:space-between;align-items:center;margin-top:7px;flex-wrap:wrap;gap:5px}
     .sc-last{font-size:.69rem;color:var(--muted)}
+    .sc-note{display:none;font-size:.78rem;color:var(--muted);line-height:1.55;margin-top:8px;padding-top:8px;border-top:1px solid var(--border)}
+    .sc-note.open{display:block}
+    .btn-info{background:transparent;border:1.5px solid var(--border);color:var(--muted);padding:5px 8px;font-size:.8rem;border-radius:7px;cursor:pointer;line-height:1;transition:background .15s,border-color .15s}
+    .btn-info.active{background:#eef4ff;border-color:var(--primary-light);color:var(--primary)}
 
     /* ── PROGRESS ── */
     .prog-wrap{display:flex;align-items:center;gap:6px;margin:4px 0}
@@ -597,10 +601,24 @@ function renderSched(){
       ${progressHtml}
       <div class="sc-foot">
         <span class="sc-last">${lastText}</span>
-        <button class="btn btn-primary btn-sm" onclick="openSvc('${item.id}')">✓ Registrar</button>
+        <div style="display:flex;gap:6px;align-items:center">
+          <button class="btn-info" onclick="toggleNote(this)" title="Ver descripción">ℹ️</button>
+          <button class="btn btn-primary btn-sm" onclick="openSvc('${item.id}')">✓ Registrar</button>
+        </div>
       </div>
+      <div class="sc-note">${item.note}</div>
     </div>`;
   }).join('');
+}
+
+// ════════════════════════════════════════════════
+// TOGGLE DESCRIPCIÓN
+// ════════════════════════════════════════════════
+function toggleNote(btn){
+  const note = btn.closest('.svc-card').querySelector('.sc-note');
+  const open = note.classList.toggle('open');
+  btn.classList.toggle('active', open);
+  btn.textContent = open ? '✕' : 'ℹ️';
 }
 
 // ════════════════════════════════════════════════
