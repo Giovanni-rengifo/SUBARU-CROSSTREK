@@ -5,6 +5,46 @@ Formato: `[versión] — AAAA-MM-DD`
 
 ---
 
+## [1.4.0] — 2026-06-23
+
+### Cambiado
+- Rediseño visual completo: dark mode con fondo `#09111e` y cards `#111c2e`
+- Tipografía: Rajdhani 700 para números/headings + DM Sans para cuerpo (Google Fonts)
+- Navegación: iconos SVG en lugar de emoji
+- Header: logo Pléyades SVG + subtítulo del modelo
+- Barras de progreso con gradiente verde→rojo según estado
+- Modales con efecto glass-morphism (`backdrop-filter: blur`)
+- Badges de estado integrados en cada tarjeta con color de borde lateral
+- Service Worker actualizado a `crosstrek-v7`
+
+---
+
+## [1.3.0] — 2026-06-22
+
+### Nuevo
+- Botón "Forzar actualización" en Config: desregistra el SW y limpia todos los cachés para resolver versiones bloqueadas
+- Sección Config reorganizada en "Vehículo" y "Kilometraje y Fecha" con botones al pie
+
+### Corregido
+- Config tab: eliminado `position:sticky` que rompía el layout en móvil
+- Service Worker: HTML pasa directamente a la red (sin interceptar) para garantizar versión fresca siempre
+- Service Worker actualizado a `crosstrek-v6` (v4→v5→v6 progresivos)
+
+---
+
+## [1.2.0] — 2026-06-22
+
+### Nuevo
+- Botón ℹ️ en cada tarjeta de servicio para desplegar/colapsar la descripción del ítem
+
+### Cambiado
+- Tab Servicio: rediseño mobile-first con tarjetas verticales (reemplaza tabla horizontal)
+- Tarjetas ordenadas por urgencia: VENCIDO → PRÓXIMO → AL DÍA
+- Cada tarjeta muestra: nombre, frecuencia, fecha próxima, días/KM restantes, barra de progreso
+- Service Worker actualizado a `crosstrek-v3`
+
+---
+
 ## [1.1.0] — 2026-06-22
 
 ### Cambiado

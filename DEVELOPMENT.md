@@ -23,8 +23,8 @@ npx serve -p 3456 .
 Cada vez que modificas `index.html`, `manifest.json` o cualquier archivo cacheado, **debes incrementar la versión del caché** en `sw.js` para que los usuarios reciban la versión nueva:
 
 ```javascript
-// sw.js — cambiar 'crosstrek-v2' → 'crosstrek-v3', etc.
-const CACHE = 'crosstrek-v3';  // ← incrementar con cada deploy
+// sw.js — cambiar 'crosstrek-v7' → 'crosstrek-v8', etc.
+const CACHE = 'crosstrek-v8';  // ← incrementar con cada deploy
 ```
 
 Si no lo haces, los usuarios seguirán viendo la versión vieja desde el caché.
@@ -43,7 +43,7 @@ Editar el array `SCHED` en `index.html` (buscar `const SCHED = [`):
   months: 12,                  // Número de meses entre servicios
   km: 19300,                   // KM entre servicios (null si no aplica)
   critical: false,             // true = muestra badge rojo "CRÍTICO"
-  note: 'Nota informativa.'    // Texto de ayuda visible en la tabla
+  note: 'Nota informativa.'    // Texto de ayuda desplegable en la tarjeta (botón ℹ️)
 },
 ```
 
@@ -62,20 +62,23 @@ Editar el array `SCHED` en `index.html` (buscar `const SCHED = [`):
 
 ---
 
-## 🎨 Cambiar Colores (Tema)
+## 🎨 Cambiar Colores (Tema Dark)
 
-Las variables CSS están al inicio del `<style>` en `index.html`:
+Las variables CSS están al inicio del `<style>` en `index.html` (tema oscuro actual):
 
 ```css
 :root {
-  --primary: #003366;       /* Azul Subaru oscuro */
-  --primary-light: #1a5fa8; /* Azul Subaru claro */
-  --accent: #e8b84b;        /* Dorado (detalles, nav activo) */
-  --success: #1e8a44;       /* Verde (AL DÍA) */
-  --warning: #b87600;       /* Amarillo (PRÓXIMO) */
-  --danger: #c0392b;        /* Rojo (VENCIDO) */
-  --bg: #eef2f7;            /* Fondo general */
-  --card: #ffffff;          /* Fondo de tarjetas */
+  --bg:      #09111e;   /* Fondo general — azul noche profundo */
+  --surf:    #111c2e;   /* Fondo de tarjetas y modales */
+  --surf2:   #1a2840;   /* Cards anidadas / hover */
+  --border:  #1e3050;   /* Bordes sutiles */
+  --txt:     #e8edf5;   /* Texto principal */
+  --txt2:    #7a8fa8;   /* Texto secundario / labels */
+  --primary: #1e52e8;   /* Azul principal (nav activo, botones) */
+  --gold:    #f0b429;   /* Dorado (PRÓXIMO / warning) */
+  --green:   #10d07c;   /* Verde (AL DÍA / ok) */
+  --red:     #ef4040;   /* Rojo (VENCIDO / danger) */
+  --radius:  10px;      /* Border-radius base */
 }
 ```
 
@@ -138,8 +141,8 @@ const KEY = 'subaru_crosstrek_v1';
 ### Checklist antes de cada push:
 - [ ] Incrementar versión del caché en `sw.js`
 - [ ] Probar localmente con `npx serve -p 3456 .`
-- [ ] Commit con mensaje descriptivo en CHANGELOG.md
-- [ ] Push desde GitHub Desktop
+- [ ] Actualizar CHANGELOG.md con los cambios
+- [ ] Claude hace `git add <archivos> && git commit -m "tipo: descripción" && git push origin main`
 
 ---
 
@@ -151,8 +154,8 @@ const KEY = 'subaru_crosstrek_v1';
 4. Confirmar — el ícono Subaru aparecerá en el home screen
 
 Para **actualizar** la PWA instalada después de un deploy:
-- Abrir la app → esperar que el Service Worker detecte la nueva versión (~segundos)
-- O cerrar y reabrir la app
+- Abrir la app → el HTML siempre se trae fresco de la red (SW no intercepta navegación)
+- Si la app parece bloqueada: **Configuración → Forzar actualización** para limpiar caches y SW
 
 ---
 
@@ -183,5 +186,5 @@ Ejemplos:
   fix: corregir cálculo de días para año bisiesto
   ui: cambiar colores del tema a modo oscuro
   data: agregar servicio de revisión de batería híbrida
-  chore: actualizar caché a crosstrek-v3
+  chore: actualizar caché a crosstrek-v8
 ```

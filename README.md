@@ -7,9 +7,10 @@ PWA (Progressive Web App) para el control de mantenimiento del Subaru Crosstrek 
 ## ✨ Funcionalidades
 
 - **Resumen** — KM actuales, días con el vehículo, alertas de servicios vencidos o próximos
-- **Mantenimiento** — Tabla con 10 servicios, fechas calculadas automáticamente desde la adquisición, barras de progreso por KM
+- **Servicio** — 10 tarjetas de mantenimiento ordenadas por urgencia, con fechas, días restantes, barras de progreso KM y descripción expandible
 - **Gastos** — Registro de costos, historial completo, exportar/importar JSON
-- **Configuración** — Datos del vehículo (fecha adquisición, KM, modelo, placa)
+- **Configuración** — Datos del vehículo (fecha adquisición, KM, modelo, placa) + botón para forzar actualización
+- **Dark mode** — Interfaz oscura con tipografía Rajdhani/DM Sans e iconos SVG
 - **Offline** — Funciona sin conexión gracias al Service Worker
 - **PWA** — Instalable en Chrome (Android/Desktop) como app nativa
 
@@ -38,12 +39,10 @@ SUBARU CROSSTREK/
 El despliegue es automático vía **GitHub Pages** desde la rama `main`.
 
 ### Flujo de trabajo para cambios:
-1. Editar los archivos localmente
-2. Abrir **GitHub Desktop**
-3. Escribir mensaje en "Summary" describiendo el cambio
-4. Clic en **"Commit to main"**
-5. Clic en **"Push origin"**
-6. GitHub Pages despliega en ~1 minuto
+1. Editar los archivos con Claude Code
+2. Incrementar la versión del caché en `sw.js` si se modificó `index.html`
+3. Claude hace commit y push automáticamente via git
+4. GitHub Pages despliega en ~1 minuto
 
 ---
 

@@ -23,13 +23,15 @@ PWA de control de mantenimiento para un Subaru Crosstrek Híbrida 2026 en Bogot�
 - Los datos son independientes del código: actualizar archivos nunca afecta los datos guardados
 
 ### Service Worker
-- Versión actual del caché: `crosstrek-v2`
-- **Incrementar la versión** (`v3`, `v4`...) en `sw.js` cada vez que se modifique `index.html`, `manifest.json` o `subaru-logo.png`
+- Versión actual del caché: `crosstrek-v7`
+- **Incrementar la versión** (`v8`, `v9`...) en `sw.js` cada vez que se modifique `index.html`, `manifest.json` o `subaru-logo.png`
 - Si no se incrementa, los usuarios ven la versión vieja desde el caché
+- El HTML de navegación nunca se intercepta (pasa directo a la red) — garantiza versión fresca online
 
 ### Commits y push
-- El usuario hace el commit y push desde GitHub Desktop
-- Al terminar cambios, avisar: **"Listo para commit y push"** y sugerir el mensaje de commit
+- Claude hace commit y push directamente via Bash tool (`git add`, `git commit -m`, `git push origin main`)
+- Usar siempre `-m "tipo: descripción"` simple — nunca heredoc (falla en Windows/bash)
+- Repo en: `C:\Users\PC\Documents\Claude\Artifacts\SUBARU CROSSTREK`
 
 ## Moneda y localización
 ```javascript
