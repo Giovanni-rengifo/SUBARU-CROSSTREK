@@ -169,6 +169,13 @@
         </svg>
         Config
       </button>
+      <button id="nav-tires" class="nav-btn" onclick="tab('tires')">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <circle cx="12" cy="12" r="10"/>
+          <circle cx="12" cy="12" r="3"/>
+        </svg>
+        Llantas
+      </button>
     </div>
   </nav>
 
@@ -300,6 +307,86 @@
     </div>
   </div>
 
+  <!-- LLANTAS -->
+  <div id="tab-tires" class="tab">
+
+    <div style="background: var(--surf); border: 1px solid var(--border); border-radius: 14px; padding: 14px; margin-bottom: 10px;">
+      <div style="font-size: 0.63rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.7px; color: var(--muted); margin-bottom: 16px; display: flex; align-items: center; gap: 6px;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/>
+        </svg>
+        Presión de Llantas
+      </div>
+
+      <!-- Uso normal -->
+      <div style="margin-bottom: 18px;">
+        <div style="font-size: 0.59rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); opacity: 0.7; margin-bottom: 9px; padding-bottom: 6px; border-bottom: 1px solid var(--border);">Uso normal · hasta 4 personas + equipaje</div>
+        <div style="display: grid; grid-template-columns: auto repeat(3, 1fr); gap: 5px; align-items: center;">
+          <div></div>
+          <div style="font-size: 0.58rem; color: var(--muted); text-align: center; font-weight: 700; letter-spacing: 0.3px; text-transform: uppercase; padding-bottom: 2px;">kPa</div>
+          <div style="font-size: 0.58rem; color: var(--muted); text-align: center; font-weight: 700; letter-spacing: 0.3px; text-transform: uppercase; padding-bottom: 2px;">Bar</div>
+          <div style="font-size: 0.58rem; color: rgba(30,82,232,0.9); text-align: center; font-weight: 700; letter-spacing: 0.3px; text-transform: uppercase; padding-bottom: 2px;">PSI</div>
+          <div style="font-size: 0.77rem; font-weight: 600; color: var(--text); padding-right: 8px;">Delantera</div>
+          <div style="background: var(--surf2); border-radius: 7px; padding: 9px 4px; text-align: center; font-family: 'Rajdhani',sans-serif; font-size: 0.95rem; font-weight: 700;">230</div>
+          <div style="background: var(--surf2); border-radius: 7px; padding: 9px 4px; text-align: center; font-family: 'Rajdhani',sans-serif; font-size: 0.95rem; font-weight: 700;">2.3</div>
+          <div style="background: rgba(30,82,232,0.1); border: 1px solid rgba(30,82,232,0.28); border-radius: 7px; padding: 9px 4px; text-align: center; font-family: 'Rajdhani',sans-serif; font-size: 1.05rem; font-weight: 700; color: #7aabf7;">33</div>
+          <div style="font-size: 0.77rem; font-weight: 600; color: var(--text); padding-right: 8px;">Trasera</div>
+          <div style="background: var(--surf2); border-radius: 7px; padding: 9px 4px; text-align: center; font-family: 'Rajdhani',sans-serif; font-size: 0.95rem; font-weight: 700;">220</div>
+          <div style="background: var(--surf2); border-radius: 7px; padding: 9px 4px; text-align: center; font-family: 'Rajdhani',sans-serif; font-size: 0.95rem; font-weight: 700;">2.2</div>
+          <div style="background: rgba(30,82,232,0.1); border: 1px solid rgba(30,82,232,0.28); border-radius: 7px; padding: 9px 4px; text-align: center; font-family: 'Rajdhani',sans-serif; font-size: 1.05rem; font-weight: 700; color: #7aabf7;">32</div>
+        </div>
+      </div>
+
+      <!-- Carga completa -->
+      <div style="margin-bottom: 18px;">
+        <div style="font-size: 0.59rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); opacity: 0.7; margin-bottom: 9px; padding-bottom: 6px; border-bottom: 1px solid var(--border);">Carga completa · 5 o más personas + equipaje</div>
+        <div style="display: grid; grid-template-columns: auto repeat(3, 1fr); gap: 5px; align-items: center;">
+          <div></div>
+          <div style="font-size: 0.58rem; color: var(--muted); text-align: center; font-weight: 700; letter-spacing: 0.3px; text-transform: uppercase; padding-bottom: 2px;">kPa</div>
+          <div style="font-size: 0.58rem; color: var(--muted); text-align: center; font-weight: 700; letter-spacing: 0.3px; text-transform: uppercase; padding-bottom: 2px;">Bar</div>
+          <div style="font-size: 0.58rem; color: rgba(30,82,232,0.9); text-align: center; font-weight: 700; letter-spacing: 0.3px; text-transform: uppercase; padding-bottom: 2px;">PSI</div>
+          <div style="font-size: 0.77rem; font-weight: 600; color: var(--text); padding-right: 8px;">Delantera</div>
+          <div style="background: var(--surf2); border-radius: 7px; padding: 9px 4px; text-align: center; font-family: 'Rajdhani',sans-serif; font-size: 0.95rem; font-weight: 700;">230</div>
+          <div style="background: var(--surf2); border-radius: 7px; padding: 9px 4px; text-align: center; font-family: 'Rajdhani',sans-serif; font-size: 0.95rem; font-weight: 700;">2.3</div>
+          <div style="background: rgba(30,82,232,0.1); border: 1px solid rgba(30,82,232,0.28); border-radius: 7px; padding: 9px 4px; text-align: center; font-family: 'Rajdhani',sans-serif; font-size: 1.05rem; font-weight: 700; color: #7aabf7;">33</div>
+          <div style="font-size: 0.77rem; font-weight: 600; color: var(--text); padding-right: 8px;">Trasera</div>
+          <div style="background: var(--surf2); border-radius: 7px; padding: 9px 4px; text-align: center; font-family: 'Rajdhani',sans-serif; font-size: 0.95rem; font-weight: 700;">240</div>
+          <div style="background: var(--surf2); border-radius: 7px; padding: 9px 4px; text-align: center; font-family: 'Rajdhani',sans-serif; font-size: 0.95rem; font-weight: 700;">2.4</div>
+          <div style="background: rgba(30,82,232,0.1); border: 1px solid rgba(30,82,232,0.28); border-radius: 7px; padding: 9px 4px; text-align: center; font-family: 'Rajdhani',sans-serif; font-size: 1.05rem; font-weight: 700; color: #7aabf7;">35</div>
+        </div>
+      </div>
+
+      <!-- Remolcando -->
+      <div style="margin-bottom: 16px;">
+        <div style="font-size: 0.59rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); opacity: 0.7; margin-bottom: 9px; padding-bottom: 6px; border-bottom: 1px solid var(--border);">Remolcando</div>
+        <div style="display: grid; grid-template-columns: auto repeat(3, 1fr); gap: 5px; align-items: center;">
+          <div></div>
+          <div style="font-size: 0.58rem; color: var(--muted); text-align: center; font-weight: 700; letter-spacing: 0.3px; text-transform: uppercase; padding-bottom: 2px;">kPa</div>
+          <div style="font-size: 0.58rem; color: var(--muted); text-align: center; font-weight: 700; letter-spacing: 0.3px; text-transform: uppercase; padding-bottom: 2px;">Bar</div>
+          <div style="font-size: 0.58rem; color: rgba(30,82,232,0.9); text-align: center; font-weight: 700; letter-spacing: 0.3px; text-transform: uppercase; padding-bottom: 2px;">PSI</div>
+          <div style="font-size: 0.77rem; font-weight: 600; color: var(--text); padding-right: 8px;">Delantera</div>
+          <div style="background: var(--surf2); border-radius: 7px; padding: 9px 4px; text-align: center; font-family: 'Rajdhani',sans-serif; font-size: 0.95rem; font-weight: 700;">230</div>
+          <div style="background: var(--surf2); border-radius: 7px; padding: 9px 4px; text-align: center; font-family: 'Rajdhani',sans-serif; font-size: 0.95rem; font-weight: 700;">2.3</div>
+          <div style="background: rgba(30,82,232,0.1); border: 1px solid rgba(30,82,232,0.28); border-radius: 7px; padding: 9px 4px; text-align: center; font-family: 'Rajdhani',sans-serif; font-size: 1.05rem; font-weight: 700; color: #7aabf7;">33</div>
+          <div style="font-size: 0.77rem; font-weight: 600; color: var(--text); padding-right: 8px;">Trasera</div>
+          <div style="background: var(--surf2); border-radius: 7px; padding: 9px 4px; text-align: center; font-family: 'Rajdhani',sans-serif; font-size: 0.95rem; font-weight: 700;">260</div>
+          <div style="background: var(--surf2); border-radius: 7px; padding: 9px 4px; text-align: center; font-family: 'Rajdhani',sans-serif; font-size: 0.95rem; font-weight: 700;">2.6</div>
+          <div style="background: rgba(30,82,232,0.1); border: 1px solid rgba(30,82,232,0.28); border-radius: 7px; padding: 9px 4px; text-align: center; font-family: 'Rajdhani',sans-serif; font-size: 1.05rem; font-weight: 700; color: #7aabf7;">38</div>
+        </div>
+      </div>
+
+      <!-- Nota -->
+      <div style="display: flex; align-items: flex-start; gap: 8px; background: rgba(245,158,11,0.06); border: 1px solid rgba(245,158,11,0.15); border-radius: 9px; padding: 10px 12px;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round" style="flex-shrink:0;margin-top:1px">
+          <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+          <line x1="12" y1="9" x2="12" y2="13"/><circle cx="12" cy="17" r="0.6" fill="#f59e0b"/>
+        </svg>
+        <p style="font-size: 0.73rem; color: var(--muted); line-height: 1.6; margin: 0;">Verificar siempre con llantas <strong style="color: var(--text);">frías</strong> (3+ horas sin rodar). El sticker de referencia está en el marco de la puerta delantera izquierda. <strong style="color: var(--text);">PSI</strong> es la unidad más común en estaciones de servicio.</p>
+      </div>
+    </div>
+
+  </div>
+
 </main>
 
 <!-- ══ MODAL KM ══ -->
@@ -404,7 +491,7 @@ function toast(msg) {
   setTimeout(() => t.classList.remove('show'), 2600);
 }
 
-const TABS = ['dashboard','schedule','costs','config'];
+const TABS = ['dashboard','schedule','costs','config','tires'];
 function tab(name) {
   TABS.forEach(t => {
     document.getElementById('tab-'+t).classList.toggle('active', t===name);
